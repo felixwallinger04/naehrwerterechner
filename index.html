@@ -450,7 +450,167 @@ var PRESET_FOODS = [
   { id: "p240", name: "Gebratener Reis (Fried Rice)", kcal: 165, protein: 4.5, carbs: 25.0, fat: 5.0, group: "Gerichte" },
   { id: "p241", name: "Frühlingsrollen (frittiert)", kcal: 220, protein: 5.0, carbs: 24.0, fat: 11.0, group: "Gerichte" },
   { id: "p242", name: "Hummus", kcal: 166, protein: 8.0, carbs: 14.0, fat: 10.0, group: "Gerichte" },
-  { id: "p243", name: "Baba Ganoush", kcal: 105, protein: 2.5, carbs: 8.0, fat: 7.0, group: "Gerichte" }
+  { id: "p243", name: "Baba Ganoush", kcal: 105, protein: 2.5, carbs: 8.0, fat: 7.0, group: "Gerichte" },
+  { id: "p244", name: "Roggenmischbrot", kcal: 220, protein: 7.0, carbs: 42.0, fat: 2.5, group: "Getreide" },
+  { id: "p245", name: "Mehrkornbrot", kcal: 230, protein: 9.0, carbs: 40.0, fat: 3.5, group: "Getreide" },
+  { id: "p246", name: "Laugenbrezel", kcal: 280, protein: 8.0, carbs: 55.0, fat: 3.0, group: "Getreide" },
+  { id: "p247", name: "Weizenmehl (Type 405)", kcal: 348, protein: 10.0, carbs: 73.0, fat: 1.0, group: "Getreide" },
+  { id: "p248", name: "Vollkornmehl", kcal: 340, protein: 13.0, carbs: 62.0, fat: 2.5, group: "Getreide" },
+  { id: "p249", name: "Maismehl", kcal: 361, protein: 7.0, carbs: 77.0, fat: 3.5, group: "Getreide" },
+  { id: "p250", name: "Hirse (gekocht)", kcal: 118, protein: 3.5, carbs: 23.0, fat: 1.7, group: "Getreide" },
+  { id: "p251", name: "Amaranth (gekocht)", kcal: 103, protein: 3.8, carbs: 19.0, fat: 1.6, group: "Getreide" },
+  { id: "p252", name: "Buchweizen (gekocht)", kcal: 92, protein: 3.4, carbs: 20.0, fat: 0.6, group: "Getreide" },
+  { id: "p253", name: "Instant-Nudeln (roh, ohne Würze)", kcal: 436, protein: 9.0, carbs: 60.0, fat: 18.0, group: "Getreide" },
+  { id: "p254", name: "Spätzle (gekocht)", kcal: 150, protein: 5.5, carbs: 28.0, fat: 1.8, group: "Getreide" },
+  { id: "p255", name: "Ravioli (Fleisch, gegart)", kcal: 165, protein: 7.0, carbs: 22.0, fat: 5.0, group: "Getreide" },
+  { id: "p256", name: "Tortellini (Käse, gegart)", kcal: 190, protein: 8.0, carbs: 27.0, fat: 5.5, group: "Getreide" },
+  { id: "p257", name: "Gnocchi (gegart)", kcal: 130, protein: 3.0, carbs: 27.0, fat: 0.7, group: "Getreide" },
+  { id: "p258", name: "Bagel", kcal: 250, protein: 10.0, carbs: 48.0, fat: 1.5, group: "Getreide" },
+  { id: "p259", name: "Ciabatta", kcal: 271, protein: 9.0, carbs: 51.0, fat: 2.5, group: "Getreide" },
+  { id: "p260", name: "Frühlingszwiebel", kcal: 32, protein: 1.8, carbs: 4.7, fat: 0.2, group: "Gemüse" },
+  { id: "p261", name: "Schalotte", kcal: 72, protein: 2.5, carbs: 16.8, fat: 0.1, group: "Gemüse" },
+  { id: "p262", name: "Ingwer", kcal: 80, protein: 1.8, carbs: 18.0, fat: 0.8, group: "Gemüse" },
+  { id: "p263", name: "Kartoffeln (roh)", kcal: 77, protein: 2.0, carbs: 17.5, fat: 0.1, group: "Gemüse" },
+  { id: "p264", name: "Süßkartoffel (roh)", kcal: 86, protein: 1.6, carbs: 20.0, fat: 0.1, group: "Gemüse" },
+  { id: "p265", name: "Sauerkraut", kcal: 19, protein: 0.9, carbs: 4.3, fat: 0.2, group: "Gemüse" },
+  { id: "p266", name: "Essiggurken", kcal: 11, protein: 0.6, carbs: 2.2, fat: 0.2, group: "Gemüse" },
+  { id: "p267", name: "Rote Zwiebel", kcal: 40, protein: 1.1, carbs: 9.3, fat: 0.1, group: "Gemüse" },
+  { id: "p268", name: "Portobello-Pilz", kcal: 26, protein: 2.5, carbs: 4.0, fat: 0.4, group: "Gemüse" },
+  { id: "p269", name: "Shiitake-Pilz (gegart)", kcal: 55, protein: 2.2, carbs: 12.3, fat: 0.5, group: "Gemüse" },
+  { id: "p270", name: "Pak Choi", kcal: 13, protein: 1.5, carbs: 2.2, fat: 0.2, group: "Gemüse" },
+  { id: "p271", name: "Wirsing", kcal: 27, protein: 2.0, carbs: 6.1, fat: 0.1, group: "Gemüse" },
+  { id: "p272", name: "Romana-Salat", kcal: 17, protein: 1.2, carbs: 3.3, fat: 0.3, group: "Gemüse" },
+  { id: "p273", name: "Sprossen (Mungbohnen)", kcal: 30, protein: 3.0, carbs: 5.9, fat: 0.2, group: "Gemüse" },
+  { id: "p274", name: "Sternfrucht / Kaki", kcal: 70, protein: 0.6, carbs: 18.6, fat: 0.6, group: "Obst" },
+  { id: "p275", name: "Physalis", kcal: 53, protein: 1.9, carbs: 11.2, fat: 0.7, group: "Obst" },
+  { id: "p276", name: "Guave", kcal: 68, protein: 2.6, carbs: 14.3, fat: 1.0, group: "Obst" },
+  { id: "p277", name: "Passionsfrucht", kcal: 97, protein: 2.2, carbs: 23.4, fat: 0.7, group: "Obst" },
+  { id: "p278", name: "Johannisbeeren (rot)", kcal: 56, protein: 1.4, carbs: 13.1, fat: 0.2, group: "Obst" },
+  { id: "p279", name: "Stachelbeeren", kcal: 44, protein: 0.9, carbs: 10.2, fat: 0.6, group: "Obst" },
+  { id: "p280", name: "Quitte", kcal: 57, protein: 0.4, carbs: 15.3, fat: 0.1, group: "Obst" },
+  { id: "p281", name: "Mandarine", kcal: 53, protein: 0.8, carbs: 13.3, fat: 0.3, group: "Obst" },
+  { id: "p282", name: "Clementine", kcal: 47, protein: 0.9, carbs: 12.0, fat: 0.2, group: "Obst" },
+  { id: "p283", name: "Holunderbeeren", kcal: 73, protein: 0.7, carbs: 18.4, fat: 0.5, group: "Obst" },
+  { id: "p284", name: "Hähnchenschenkel (gegart)", kcal: 216, protein: 26.0, carbs: 0.0, fat: 12.0, group: "Fleisch & Fisch" },
+  { id: "p285", name: "Hähnchenflügel (gegart)", kcal: 203, protein: 30.0, carbs: 0.0, fat: 8.1, group: "Fleisch & Fisch" },
+  { id: "p286", name: "Rinderfilet (gegart)", kcal: 190, protein: 28.0, carbs: 0.0, fat: 8.0, group: "Fleisch & Fisch" },
+  { id: "p287", name: "Roastbeef", kcal: 152, protein: 27.0, carbs: 0.5, fat: 4.5, group: "Fleisch & Fisch" },
+  { id: "p288", name: "Kassler (gegart)", kcal: 184, protein: 22.0, carbs: 0.0, fat: 10.0, group: "Fleisch & Fisch" },
+  { id: "p289", name: "Corned Beef", kcal: 220, protein: 25.0, carbs: 0.0, fat: 13.0, group: "Fleisch & Fisch" },
+  { id: "p290", name: "Leber (Rind, gegart)", kcal: 165, protein: 25.0, carbs: 4.0, fat: 4.3, group: "Fleisch & Fisch" },
+  { id: "p291", name: "Aal (geräuchert)", kcal: 302, protein: 15.0, carbs: 0.0, fat: 26.0, group: "Fleisch & Fisch" },
+  { id: "p292", name: "Scholle (gegart)", kcal: 91, protein: 18.0, carbs: 0.0, fat: 1.7, group: "Fleisch & Fisch" },
+  { id: "p293", name: "Steinbutt (gegart)", kcal: 111, protein: 20.0, carbs: 0.0, fat: 3.0, group: "Fleisch & Fisch" },
+  { id: "p294", name: "Seelachs (gegart)", kcal: 95, protein: 20.0, carbs: 0.0, fat: 1.0, group: "Fleisch & Fisch" },
+  { id: "p295", name: "Rotbarsch (gegart)", kcal: 110, protein: 19.0, carbs: 0.0, fat: 3.4, group: "Fleisch & Fisch" },
+  { id: "p296", name: "Wolfsbarsch (gegart)", kcal: 97, protein: 18.0, carbs: 0.0, fat: 2.5, group: "Fleisch & Fisch" },
+  { id: "p297", name: "Dorade (gegart)", kcal: 96, protein: 20.0, carbs: 0.0, fat: 1.5, group: "Fleisch & Fisch" },
+  { id: "p298", name: "Hummer (gegart)", kcal: 89, protein: 19.0, carbs: 0.5, fat: 0.9, group: "Fleisch & Fisch" },
+  { id: "p299", name: "Bergkäse", kcal: 397, protein: 27.0, carbs: 0.0, fat: 32.0, group: "Eier & Milch" },
+  { id: "p300", name: "Appenzeller", kcal: 380, protein: 25.0, carbs: 0.0, fat: 30.0, group: "Eier & Milch" },
+  { id: "p301", name: "Raclettekäse", kcal: 340, protein: 24.0, carbs: 0.0, fat: 27.0, group: "Eier & Milch" },
+  { id: "p302", name: "Halloumi", kcal: 320, protein: 22.0, carbs: 2.0, fat: 25.0, group: "Eier & Milch" },
+  { id: "p303", name: "Skyr Vanille", kcal: 78, protein: 10.0, carbs: 8.0, fat: 0.3, group: "Eier & Milch" },
+  { id: "p304", name: "Milch (1,5%)", kcal: 47, protein: 3.4, carbs: 4.9, fat: 1.5, group: "Eier & Milch" },
+  { id: "p305", name: "Milch, entrahmt (0,3%)", kcal: 35, protein: 3.4, carbs: 4.9, fat: 0.2, group: "Eier & Milch" },
+  { id: "p306", name: "Hafermilch (ungesüßt)", kcal: 45, protein: 1.0, carbs: 6.5, fat: 1.5, group: "Eier & Milch" },
+  { id: "p307", name: "Reismilch", kcal: 47, protein: 0.1, carbs: 9.2, fat: 1.0, group: "Eier & Milch" },
+  { id: "p308", name: "Cashewmilch (ungesüßt)", kcal: 25, protein: 0.5, carbs: 1.5, fat: 2.0, group: "Eier & Milch" },
+  { id: "p309", name: "Schmand (24%)", kcal: 245, protein: 3.0, carbs: 3.5, fat: 24.0, group: "Eier & Milch" },
+  { id: "p310", name: "Crème fraîche", kcal: 292, protein: 2.5, carbs: 3.0, fat: 30.0, group: "Eier & Milch" },
+  { id: "p311", name: "Saure Sahne", kcal: 165, protein: 3.2, carbs: 3.6, fat: 15.0, group: "Eier & Milch" },
+  { id: "p312", name: "Weiße Bohnen (Cannellini, gekocht)", kcal: 139, protein: 9.7, carbs: 24.5, fat: 0.5, group: "Hülsenfrüchte" },
+  { id: "p313", name: "Pinto-Bohnen (gekocht)", kcal: 143, protein: 9.0, carbs: 26.2, fat: 0.7, group: "Hülsenfrüchte" },
+  { id: "p314", name: "Limabohnen (gekocht)", kcal: 115, protein: 7.8, carbs: 20.9, fat: 0.4, group: "Hülsenfrüchte" },
+  { id: "p315", name: "Tempeh", kcal: 193, protein: 20.3, carbs: 7.6, fat: 10.8, group: "Hülsenfrüchte" },
+  { id: "p316", name: "Sesamöl", kcal: 884, protein: 0.0, carbs: 0.0, fat: 100.0, group: "Fette & Süßes" },
+  { id: "p317", name: "Erdnussöl", kcal: 884, protein: 0.0, carbs: 0.0, fat: 100.0, group: "Fette & Süßes" },
+  { id: "p318", name: "Avocadoöl", kcal: 884, protein: 0.0, carbs: 0.0, fat: 100.0, group: "Fette & Süßes" },
+  { id: "p319", name: "Traubenkernöl", kcal: 884, protein: 0.0, carbs: 0.0, fat: 100.0, group: "Fette & Süßes" },
+  { id: "p320", name: "Schokoladenkeks", kcal: 495, protein: 6.0, carbs: 63.0, fat: 24.0, group: "Fette & Süßes" },
+  { id: "p321", name: "Waffeln (süß)", kcal: 291, protein: 5.5, carbs: 51.0, fat: 8.0, group: "Fette & Süßes" },
+  { id: "p322", name: "Donut", kcal: 452, protein: 5.0, carbs: 51.0, fat: 25.0, group: "Fette & Süßes" },
+  { id: "p323", name: "Marshmallows", kcal: 318, protein: 1.8, carbs: 78.0, fat: 0.2, group: "Fette & Süßes" },
+  { id: "p324", name: "Lakritz", kcal: 325, protein: 3.0, carbs: 78.0, fat: 0.5, group: "Fette & Süßes" },
+  { id: "p325", name: "Karamellbonbons", kcal: 397, protein: 0.5, carbs: 87.0, fat: 4.5, group: "Fette & Süßes" },
+  { id: "p326", name: "Traubenzucker", kcal: 400, protein: 0.0, carbs: 100.0, fat: 0.0, group: "Fette & Süßes" },
+  { id: "p327", name: "Milchschokolade mit Nüssen", kcal: 550, protein: 8.5, carbs: 52.0, fat: 35.0, group: "Fette & Süßes" },
+  { id: "p328", name: "Reiswaffel-Schoko", kcal: 460, protein: 6.0, carbs: 68.0, fat: 18.0, group: "Fette & Süßes" },
+  { id: "p329", name: "Kollagen-Pulver", kcal: 370, protein: 90.0, carbs: 0.0, fat: 0.5, group: "Fitness & Sport" },
+  { id: "p330", name: "Proteinpudding", kcal: 90, protein: 10.0, carbs: 8.0, fat: 2.0, group: "Fitness & Sport" },
+  { id: "p331", name: "Protein-Eis", kcal: 140, protein: 15.0, carbs: 12.0, fat: 3.5, group: "Fitness & Sport" },
+  { id: "p332", name: "Haferflocken-Protein-Mix", kcal: 390, protein: 25.0, carbs: 45.0, fat: 8.0, group: "Fitness & Sport" },
+  { id: "p333", name: "Apfelsaft", kcal: 46, protein: 0.1, carbs: 11.3, fat: 0.1, group: "Getränke" },
+  { id: "p334", name: "Orangensaft", kcal: 45, protein: 0.7, carbs: 10.4, fat: 0.2, group: "Getränke" },
+  { id: "p335", name: "Traubensaft", kcal: 60, protein: 0.3, carbs: 15.0, fat: 0.0, group: "Getränke" },
+  { id: "p336", name: "Cola", kcal: 42, protein: 0.0, carbs: 10.6, fat: 0.0, group: "Getränke" },
+  { id: "p337", name: "Limonade (Zitrone)", kcal: 45, protein: 0.0, carbs: 11.0, fat: 0.0, group: "Getränke" },
+  { id: "p338", name: "Bier (Pils)", kcal: 43, protein: 0.5, carbs: 3.5, fat: 0.0, group: "Getränke" },
+  { id: "p339", name: "Wein, rot", kcal: 85, protein: 0.1, carbs: 2.6, fat: 0.0, group: "Getränke" },
+  { id: "p340", name: "Wein, weiß", kcal: 82, protein: 0.1, carbs: 2.5, fat: 0.0, group: "Getränke" },
+  { id: "p341", name: "Sekt / Prosecco", kcal: 76, protein: 0.2, carbs: 1.5, fat: 0.0, group: "Getränke" },
+  { id: "p342", name: "Cappuccino (mit Milch)", kcal: 40, protein: 2.0, carbs: 3.5, fat: 1.5, group: "Getränke" },
+  { id: "p343", name: "Latte Macchiato", kcal: 55, protein: 2.8, carbs: 4.8, fat: 2.2, group: "Getränke" },
+  { id: "p344", name: "Kakao (heiße Schokolade)", kcal: 85, protein: 3.5, carbs: 11.0, fat: 3.0, group: "Getränke" },
+  { id: "p345", name: "Energy Drink", kcal: 45, protein: 0.0, carbs: 11.0, fat: 0.0, group: "Getränke" },
+  { id: "p346", name: "Eistee (gesüßt)", kcal: 33, protein: 0.0, carbs: 8.0, fat: 0.0, group: "Getränke" },
+  { id: "p347", name: "Smoothie (Frucht, Ø)", kcal: 60, protein: 0.8, carbs: 14.0, fat: 0.3, group: "Getränke" },
+  { id: "p348", name: "Tomatensaft", kcal: 17, protein: 0.9, carbs: 3.5, fat: 0.1, group: "Getränke" },
+  { id: "p349", name: "Kaffee (schwarz)", kcal: 1, protein: 0.1, carbs: 0.0, fat: 0.0, group: "Getränke" },
+  { id: "p350", name: "Tee (ungesüßt)", kcal: 1, protein: 0.0, carbs: 0.2, fat: 0.0, group: "Getränke" },
+  { id: "p351", name: "Croissant", kcal: 406, protein: 8.0, carbs: 45.0, fat: 21.0, group: "Backwaren & Süßgebäck" },
+  { id: "p352", name: "Muffin (Schoko)", kcal: 380, protein: 5.5, carbs: 50.0, fat: 18.0, group: "Backwaren & Süßgebäck" },
+  { id: "p353", name: "Schokoladenkuchen", kcal: 371, protein: 5.0, carbs: 50.0, fat: 17.0, group: "Backwaren & Süßgebäck" },
+  { id: "p354", name: "Käsekuchen", kcal: 321, protein: 6.5, carbs: 26.0, fat: 21.0, group: "Backwaren & Süßgebäck" },
+  { id: "p355", name: "Apfelkuchen", kcal: 260, protein: 3.5, carbs: 35.0, fat: 12.0, group: "Backwaren & Süßgebäck" },
+  { id: "p356", name: "Zimtschnecke", kcal: 374, protein: 6.0, carbs: 48.0, fat: 17.0, group: "Backwaren & Süßgebäck" },
+  { id: "p357", name: "Berliner / Krapfen", kcal: 350, protein: 5.5, carbs: 45.0, fat: 16.0, group: "Backwaren & Süßgebäck" },
+  { id: "p358", name: "Brownie", kcal: 405, protein: 5.0, carbs: 50.0, fat: 21.0, group: "Backwaren & Süßgebäck" },
+  { id: "p359", name: "Vanillekipferl", kcal: 480, protein: 6.0, carbs: 55.0, fat: 27.0, group: "Backwaren & Süßgebäck" },
+  { id: "p360", name: "Streuselkuchen", kcal: 340, protein: 5.0, carbs: 45.0, fat: 15.0, group: "Backwaren & Süßgebäck" },
+  { id: "p361", name: "Aglio e Olio", kcal: 210, protein: 6.0, carbs: 30.0, fat: 7.0, group: "Gerichte" },
+  { id: "p362", name: "Penne Arrabiata", kcal: 155, protein: 5.0, carbs: 26.0, fat: 3.5, group: "Gerichte" },
+  { id: "p363", name: "Tortellini in Sahnesauce", kcal: 210, protein: 8.0, carbs: 20.0, fat: 11.0, group: "Gerichte" },
+  { id: "p364", name: "Bruschetta", kcal: 180, protein: 5.0, carbs: 24.0, fat: 7.0, group: "Gerichte" },
+  { id: "p365", name: "Tiramisu", kcal: 283, protein: 5.0, carbs: 29.0, fat: 17.0, group: "Gerichte" },
+  { id: "p366", name: "Teriyaki Hähnchen mit Reis", kcal: 155, protein: 10.0, carbs: 20.0, fat: 4.0, group: "Gerichte" },
+  { id: "p367", name: "Gyoza / Dumplings (gedämpft)", kcal: 210, protein: 8.0, carbs: 25.0, fat: 8.0, group: "Gerichte" },
+  { id: "p368", name: "Massaman Curry", kcal: 145, protein: 8.0, carbs: 8.0, fat: 9.0, group: "Gerichte" },
+  { id: "p369", name: "Green Curry", kcal: 135, protein: 7.0, carbs: 6.0, fat: 9.0, group: "Gerichte" },
+  { id: "p370", name: "Tom Yum Suppe", kcal: 40, protein: 3.0, carbs: 4.0, fat: 1.5, group: "Gerichte" },
+  { id: "p371", name: "Bánh Mì", kcal: 230, protein: 10.0, carbs: 28.0, fat: 8.0, group: "Gerichte" },
+  { id: "p372", name: "Tacos (Rind)", kcal: 200, protein: 10.0, carbs: 16.0, fat: 11.0, group: "Gerichte" },
+  { id: "p373", name: "Burrito (Rind)", kcal: 180, protein: 9.0, carbs: 20.0, fat: 7.0, group: "Gerichte" },
+  { id: "p374", name: "Guacamole", kcal: 155, protein: 2.0, carbs: 8.0, fat: 14.0, group: "Gerichte" },
+  { id: "p375", name: "Kaiserschmarrn", kcal: 260, protein: 6.0, carbs: 35.0, fat: 10.0, group: "Gerichte" },
+  { id: "p376", name: "Serviettenknödel", kcal: 160, protein: 4.5, carbs: 27.0, fat: 3.5, group: "Gerichte" },
+  { id: "p377", name: "Sauerbraten", kcal: 175, protein: 20.0, carbs: 5.0, fat: 8.0, group: "Gerichte" },
+  { id: "p378", name: "Rouladen", kcal: 175, protein: 16.0, carbs: 4.0, fat: 10.0, group: "Gerichte" },
+  { id: "p379", name: "Kässpätzle", kcal: 220, protein: 8.0, carbs: 24.0, fat: 10.0, group: "Gerichte" },
+  { id: "p380", name: "Kebab-Teller", kcal: 165, protein: 12.0, carbs: 12.0, fat: 8.0, group: "Gerichte" },
+  { id: "p381", name: "Falafel-Teller mit Hummus", kcal: 200, protein: 8.0, carbs: 20.0, fat: 10.0, group: "Gerichte" },
+  { id: "p382", name: "Dal (Linsen-Curry)", kcal: 105, protein: 6.0, carbs: 14.0, fat: 3.0, group: "Gerichte" },
+  { id: "p383", name: "Tikka Masala", kcal: 175, protein: 13.0, carbs: 8.0, fat: 10.0, group: "Gerichte" },
+  { id: "p384", name: "Biryani", kcal: 175, protein: 7.0, carbs: 24.0, fat: 5.5, group: "Gerichte" },
+  { id: "p385", name: "Mac and Cheese", kcal: 195, protein: 8.0, carbs: 18.0, fat: 10.0, group: "Gerichte" },
+  { id: "p386", name: "Hot Dog", kcal: 250, protein: 9.0, carbs: 21.0, fat: 15.0, group: "Gerichte" },
+  { id: "p387", name: "Pancakes mit Ahornsirup", kcal: 260, protein: 5.0, carbs: 42.0, fat: 8.0, group: "Gerichte" },
+  { id: "p388", name: "Caesar Salad mit Hähnchen", kcal: 145, protein: 12.0, carbs: 5.0, fat: 9.0, group: "Gerichte" },
+  { id: "p389", name: "Chicken Tenders", kcal: 260, protein: 16.0, carbs: 16.0, fat: 15.0, group: "Gerichte" },
+  { id: "p390", name: "Rührei", kcal: 155, protein: 11.0, carbs: 1.0, fat: 12.0, group: "Gerichte" },
+  { id: "p391", name: "Spiegelei", kcal: 196, protein: 13.0, carbs: 1.0, fat: 15.0, group: "Gerichte" },
+  { id: "p392", name: "French Toast", kcal: 220, protein: 7.0, carbs: 24.0, fat: 10.0, group: "Gerichte" },
+  { id: "p393", name: "Bagel mit Frischkäse und Lachs", kcal: 230, protein: 12.0, carbs: 22.0, fat: 10.0, group: "Gerichte" },
+  { id: "p394", name: "Porridge (mit Milch)", kcal: 90, protein: 3.5, carbs: 13.0, fat: 2.5, group: "Gerichte" },
+  { id: "p395", name: "Gulaschsuppe", kcal: 75, protein: 6.0, carbs: 6.0, fat: 3.0, group: "Gerichte" },
+  { id: "p396", name: "Hühnersuppe", kcal: 35, protein: 3.0, carbs: 3.0, fat: 1.2, group: "Gerichte" },
+  { id: "p397", name: "Brokkolisuppe", kcal: 55, protein: 2.5, carbs: 5.0, fat: 3.0, group: "Gerichte" },
+  { id: "p398", name: "Erbsensuppe", kcal: 80, protein: 5.0, carbs: 11.0, fat: 2.0, group: "Gerichte" },
+  { id: "p399", name: "Nizza-Salat", kcal: 130, protein: 8.0, carbs: 5.0, fat: 9.0, group: "Gerichte" },
+  { id: "p400", name: "Waldorf-Salat", kcal: 160, protein: 2.0, carbs: 10.0, fat: 13.0, group: "Gerichte" },
+  { id: "p401", name: "Rote-Bete-Salat", kcal: 90, protein: 2.0, carbs: 12.0, fat: 3.5, group: "Gerichte" },
+  { id: "p402", name: "Quinoa-Salat", kcal: 140, protein: 4.5, carbs: 18.0, fat: 5.5, group: "Gerichte" },
+  { id: "p403", name: "Osso Buco", kcal: 165, protein: 20.0, carbs: 2.0, fat: 8.0, group: "Gerichte" }
 ];
 
 var DEFAULT_GOAL = { kcal: 2200, protein: 140, carbs: 250, fat: 70 };
@@ -532,15 +692,14 @@ function groupWeightData(entries, range) {
   }
   return sorted.map(function(e){ return { x: formatShortDate(e.date), y: e.weight }; });
 }
-function groupDailyTotals(entries, range) {
-  if (!entries.length) return [];
+function groupDailyTotals(entries, range, viewDate, goalKcal) {
   var sorted = entries.slice().sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
 
   if (range === "day" || range === "max") {
     var limited = range === "day" ? sorted.slice(-14) : sorted;
     return limited.map(function(e){
       var d = new Date(e.date + "T00:00:00");
-      return { key: e.date, label: weekdayLabel(d), kcal: round1(e.totals.kcal), jumpDate: e.date, isBucketed: false };
+      return { key: e.date, label: weekdayLabel(d), kcal: round1(e.totals.kcal), jumpDate: e.date, isBucketed: false, goalForBar: goalKcal };
     });
   }
   if (range === "week") {
@@ -549,26 +708,49 @@ function groupDailyTotals(entries, range) {
     var wKeys = Object.keys(wB).sort().slice(-12);
     return wKeys.map(function(k){
       var arr = wB[k];
-      return { key: k, label: formatShortDate(k), kcal: round1(avg(arr.map(function(e){ return e.totals.kcal; }))), jumpDate: arr[arr.length-1].date, isBucketed: true };
+      return { key: k, label: formatShortDate(k), kcal: round1(avg(arr.map(function(e){ return e.totals.kcal; }))), jumpDate: arr[arr.length-1].date, isBucketed: true, goalForBar: goalKcal };
     });
   }
   if (range === "month") {
-    var mB = {};
-    sorted.forEach(function(e){ var mk = e.date.slice(0,7); (mB[mk] = mB[mk] || []).push(e); });
-    var mKeys = Object.keys(mB).sort().slice(-12);
-    return mKeys.map(function(k){
-      var arr = mB[k];
-      return { key: k, label: monthLabel(k), kcal: round1(avg(arr.map(function(e){ return e.totals.kcal; }))), jumpDate: arr[arr.length-1].date, isBucketed: true };
-    });
+    // Zeigt jeden Kalendertag des Monats, in dem viewDate liegt, als eigenen Balken (kein Durchschnitt).
+    var vd = new Date(viewDate + "T00:00:00");
+    var yy = vd.getFullYear(), mm = vd.getMonth();
+    var daysInMonth = new Date(yy, mm + 1, 0).getDate();
+    var byDate = {};
+    sorted.forEach(function(e){ byDate[e.date] = e.totals.kcal; });
+    var res = [];
+    for (var day = 1; day <= daysInMonth; day++) {
+      var dk = yy + "-" + String(mm + 1).padStart(2, "0") + "-" + String(day).padStart(2, "0");
+      res.push({ key: dk, label: String(day), kcal: round1(byDate[dk] || 0), jumpDate: dk, isBucketed: false, goalForBar: goalKcal });
+    }
+    return res;
   }
   if (range === "year") {
-    var yB = {};
-    sorted.forEach(function(e){ var yk = e.date.slice(0,4); (yB[yk] = yB[yk] || []).push(e); });
-    var yKeys = Object.keys(yB).sort();
-    return yKeys.map(function(k){
-      var arr = yB[k];
-      return { key: k, label: k, kcal: round1(avg(arr.map(function(e){ return e.totals.kcal; }))), jumpDate: arr[arr.length-1].date, isBucketed: true };
+    // Zeigt jeden Monat des Jahres, in dem viewDate liegt, als Summe (kein Durchschnitt).
+    var vy = new Date(viewDate + "T00:00:00").getFullYear();
+    var byMonth = {};
+    sorted.forEach(function(e){
+      if (e.date.slice(0,4) === String(vy)) {
+        var mk = e.date.slice(5,7);
+        if (!byMonth[mk]) byMonth[mk] = { sum: 0, last: e.date };
+        byMonth[mk].sum += e.totals.kcal;
+        if (e.date > byMonth[mk].last) byMonth[mk].last = e.date;
+      }
     });
+    var res2 = [];
+    for (var mi = 1; mi <= 12; mi++) {
+      var mkk = String(mi).padStart(2, "0");
+      var info = byMonth[mkk];
+      var dim = new Date(vy, mi, 0).getDate();
+      res2.push({
+        key: vy + "-" + mkk, label: MONTH_SHORT[mi-1],
+        kcal: info ? round1(info.sum) : 0,
+        jumpDate: info ? info.last : (vy + "-" + mkk + "-01"),
+        isBucketed: true,
+        goalForBar: goalKcal * dim
+      });
+    }
+    return res2;
   }
   return [];
 }
@@ -890,7 +1072,7 @@ function NutritionTracker() {
   var rangeMin = chartPoints.length ? Math.min.apply(null, chartPoints.map(function (p) { return p.y; })) : null;
   var rangeMax = chartPoints.length ? Math.max.apply(null, chartPoints.map(function (p) { return p.y; })) : null;
 
-  var overviewPoints = useMemo(function () { return groupDailyTotals(dailyTotals, overviewRange); }, [dailyTotals, overviewRange]);
+  var overviewPoints = useMemo(function () { return groupDailyTotals(dailyTotals, overviewRange, viewDate, goal.kcal); }, [dailyTotals, overviewRange, viewDate, goal.kcal]);
 
   if (!loaded) {
     return h("div", { className: "page", style: { display: "flex", alignItems: "center", justifyContent: "center" } },
@@ -1029,6 +1211,10 @@ function NutritionTracker() {
           h("span", { className: "mono muted", style: { fontSize: 12 } }, (function () {
             var active = overviewPoints.filter(function (p) { return p.kcal > 0; });
             if (active.length === 0) return "noch keine Daten";
+            if (overviewRange === "year") {
+              var total = active.reduce(function (s, p) { return s + p.kcal; }, 0);
+              return "Gesamt " + Math.round(total) + " kcal";
+            }
             var a = avg(active.map(function (p) { return p.kcal; }));
             return "Ø " + Math.round(a) + " kcal";
           })())
@@ -1045,8 +1231,9 @@ function NutritionTracker() {
           ? h("div", { className: "log-empty" }, "Noch keine Daten vorhanden.")
           : h("div", { className: "week-bars", style: overviewPoints.length > 16 ? { gap: "3px" } : null },
               overviewPoints.map(function (p) {
-                var pct = goal.kcal > 0 ? Math.min(p.kcal / goal.kcal, 1.2) : 0;
-                var over = p.kcal > goal.kcal;
+                var barGoal = p.goalForBar || goal.kcal;
+                var pct = barGoal > 0 ? Math.min(p.kcal / barGoal, 1.2) : 0;
+                var over = p.kcal > barGoal;
                 var isViewDate = !p.isBucketed && p.key === viewDate;
                 var isToday = !p.isBucketed && p.key === todayStr;
                 var labelColor = isViewDate ? "#8FBC5A" : (isToday ? "#EDE8DE" : "#8A8579");
