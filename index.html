@@ -93,6 +93,7 @@
   .week-val { font-size: 10px; color: #8A8579; margin-bottom: 4px; height: 12px; overflow: hidden; white-space: nowrap; }
   .week-bar { width: 100%; border-radius: 6px 6px 0 0; transition: height .3s ease; min-height: 0; }
   .week-label { font-size: 11px; margin-top: 8px; padding: 2px 6px; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .week-tick { width: 3px; height: 3px; border-radius: 50%; background: #4A463E; margin-top: 8px; display: inline-block; }
   .legend { display: flex; align-items: center; gap: 16px; margin-top: 16px; font-size: 10px; color: #8A8579; flex-wrap: wrap; }
   .legend-item { display: flex; align-items: center; gap: 6px; }
   .legend-dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
@@ -205,6 +206,7 @@ function Drumstick(p) { return h(Icon, p, h("circle", {cx:9,cy:9,r:5}), h("path"
 function Wheat(p) { return h(Icon, p, h("line", {x1:12,y1:22,x2:12,y2:4}), h("path", {d:"M9 6l3-2 3 2"}), h("path", {d:"M9 10l3-2 3 2"}), h("path", {d:"M9 14l3-2 3 2"})); }
 function Droplet(p) { return h(Icon, p, h("path", {d:"M12 2s7 8 7 13a7 7 0 1 1-14 0c0-5 7-13 7-13z"})); }
 function Scale(p) { return h(Icon, p, h("path",{d:"M12 3v18"}), h("path",{d:"M5 8l-3 5a4 4 0 0 0 8 0z"}), h("path",{d:"M19 8l-3 5a4 4 0 0 0 8 0z"}), h("path",{d:"M5 8h14"}), h("path",{d:"M9 21h6"})); }
+function Pencil(p) { return h(Icon, p, h("path", {d:"M12 20h9"}), h("path", {d:"M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"})); }
 
 // ---------- Stammdaten (pro 100 g bzw. pro 100 g des fertigen Gerichts) ----------
 var PRESET_FOODS = [
@@ -610,7 +612,76 @@ var PRESET_FOODS = [
   { id: "p400", name: "Waldorf-Salat", kcal: 160, protein: 2.0, carbs: 10.0, fat: 13.0, group: "Gerichte" },
   { id: "p401", name: "Rote-Bete-Salat", kcal: 90, protein: 2.0, carbs: 12.0, fat: 3.5, group: "Gerichte" },
   { id: "p402", name: "Quinoa-Salat", kcal: 140, protein: 4.5, carbs: 18.0, fat: 5.5, group: "Gerichte" },
-  { id: "p403", name: "Osso Buco", kcal: 165, protein: 20.0, carbs: 2.0, fat: 8.0, group: "Gerichte" }
+  { id: "p403", name: "Osso Buco", kcal: 165, protein: 20.0, carbs: 2.0, fat: 8.0, group: "Gerichte" },
+  { id: "p404", name: "Haferkleie", kcal: 246, protein: 17.0, carbs: 66.0, fat: 9.0, group: "Getreide" },
+  { id: "p405", name: "Dinkelmehl", kcal: 336, protein: 13.0, carbs: 68.0, fat: 2.5, group: "Getreide" },
+  { id: "p406", name: "Kichererbsenmehl", kcal: 387, protein: 22.0, carbs: 58.0, fat: 6.7, group: "Getreide" },
+  { id: "p407", name: "Panko-Paniermehl", kcal: 372, protein: 10.0, carbs: 78.0, fat: 2.5, group: "Getreide" },
+  { id: "p408", name: "Semmelbrösel", kcal: 395, protein: 13.0, carbs: 74.0, fat: 4.0, group: "Getreide" },
+  { id: "p409", name: "Reis, Basmati (gekocht)", kcal: 121, protein: 3.5, carbs: 25.0, fat: 0.4, group: "Getreide" },
+  { id: "p410", name: "Reis, Jasmin (gekocht)", kcal: 129, protein: 2.7, carbs: 28.0, fat: 0.2, group: "Getreide" },
+  { id: "p411", name: "Wildreis (gekocht)", kcal: 101, protein: 4.0, carbs: 21.0, fat: 0.3, group: "Getreide" },
+  { id: "p412", name: "Perlgraupen (gekocht)", kcal: 123, protein: 2.3, carbs: 28.2, fat: 0.4, group: "Getreide" },
+  { id: "p413", name: "Zuckerschoten", kcal: 42, protein: 2.8, carbs: 7.6, fat: 0.2, group: "Gemüse" },
+  { id: "p414", name: "Süßmais (Kolben, gekocht)", kcal: 96, protein: 3.4, carbs: 21.0, fat: 1.5, group: "Gemüse" },
+  { id: "p415", name: "Sellerie (Stangen)", kcal: 16, protein: 0.7, carbs: 3.0, fat: 0.2, group: "Gemüse" },
+  { id: "p416", name: "Topinambur", kcal: 73, protein: 2.0, carbs: 17.4, fat: 0.0, group: "Gemüse" },
+  { id: "p417", name: "Pastinake", kcal: 71, protein: 1.2, carbs: 17.9, fat: 0.3, group: "Gemüse" },
+  { id: "p418", name: "Meerrettich", kcal: 87, protein: 3.2, carbs: 18.0, fat: 0.7, group: "Gemüse" },
+  { id: "p419", name: "Kaktusfeige", kcal: 41, protein: 0.8, carbs: 9.6, fat: 0.5, group: "Obst" },
+  { id: "p420", name: "Sanddornbeeren", kcal: 96, protein: 1.4, carbs: 8.0, fat: 6.0, group: "Obst" },
+  { id: "p421", name: "Kumquat", kcal: 71, protein: 1.9, carbs: 15.9, fat: 0.9, group: "Obst" },
+  { id: "p422", name: "Pute, Keule (gegart)", kcal: 178, protein: 27.0, carbs: 0.0, fat: 7.0, group: "Fleisch & Fisch" },
+  { id: "p423", name: "Straußenfleisch (gegart)", kcal: 145, protein: 28.0, carbs: 0.0, fat: 3.0, group: "Fleisch & Fisch" },
+  { id: "p424", name: "Seeteufel (gegart)", kcal: 97, protein: 18.0, carbs: 0.0, fat: 1.5, group: "Fleisch & Fisch" },
+  { id: "p425", name: "Heilbutt (gegart)", kcal: 140, protein: 21.0, carbs: 0.0, fat: 6.0, group: "Fleisch & Fisch" },
+  { id: "p426", name: "Surimi", kcal: 95, protein: 12.0, carbs: 9.0, fat: 0.5, group: "Fleisch & Fisch" },
+  { id: "p427", name: "Austern", kcal: 68, protein: 9.0, carbs: 4.0, fat: 2.3, group: "Fleisch & Fisch" },
+  { id: "p428", name: "Nordseekrabben", kcal: 94, protein: 20.0, carbs: 0.5, fat: 1.3, group: "Fleisch & Fisch" },
+  { id: "p429", name: "Frischkäse, light", kcal: 155, protein: 9.0, carbs: 4.0, fat: 12.0, group: "Eier & Milch" },
+  { id: "p430", name: "Sahnequark (40%)", kcal: 176, protein: 8.0, carbs: 3.4, fat: 15.5, group: "Eier & Milch" },
+  { id: "p431", name: "Skyr Schoko", kcal: 82, protein: 10.0, carbs: 9.0, fat: 0.5, group: "Eier & Milch" },
+  { id: "p432", name: "Kondensmilch, fettarm", kcal: 108, protein: 8.0, carbs: 12.0, fat: 1.0, group: "Eier & Milch" },
+  { id: "p433", name: "Erbsen, getrocknet (gekocht)", kcal: 118, protein: 8.3, carbs: 20.9, fat: 0.4, group: "Hülsenfrüchte" },
+  { id: "p434", name: "Favabohnen / dicke Bohnen (gekocht)", kcal: 110, protein: 7.9, carbs: 19.7, fat: 0.7, group: "Hülsenfrüchte" },
+  { id: "p435", name: "Paranüsse", kcal: 656, protein: 14.3, carbs: 12.3, fat: 66.0, group: "Fette & Süßes" },
+  { id: "p436", name: "Pekannüsse", kcal: 691, protein: 9.2, carbs: 13.9, fat: 72.0, group: "Fette & Süßes" },
+  { id: "p437", name: "Ketchup", kcal: 101, protein: 1.2, carbs: 24.0, fat: 0.2, group: "Fette & Süßes" },
+  { id: "p438", name: "Mayonnaise", kcal: 680, protein: 1.1, carbs: 1.3, fat: 75.0, group: "Fette & Süßes" },
+  { id: "p439", name: "Senf", kcal: 66, protein: 4.4, carbs: 5.3, fat: 3.6, group: "Fette & Süßes" },
+  { id: "p440", name: "Sojasauce", kcal: 60, protein: 6.0, carbs: 5.6, fat: 0.1, group: "Fette & Süßes" },
+  { id: "p441", name: "BBQ-Sauce", kcal: 172, protein: 1.0, carbs: 40.0, fat: 0.5, group: "Fette & Süßes" },
+  { id: "p442", name: "Salatdressing (Ø)", kcal: 300, protein: 1.0, carbs: 12.0, fat: 28.0, group: "Fette & Süßes" },
+  { id: "p443", name: "Proteincreme / -aufstrich", kcal: 380, protein: 30.0, carbs: 25.0, fat: 15.0, group: "Fitness & Sport" },
+  { id: "p444", name: "Granola", kcal: 471, protein: 11.0, carbs: 64.0, fat: 20.0, group: "Fitness & Sport" },
+  { id: "p445", name: "Bubble Tea (Ø)", kcal: 70, protein: 0.3, carbs: 17.0, fat: 0.2, group: "Getränke" },
+  { id: "p446", name: "Kombucha", kcal: 30, protein: 0.0, carbs: 7.0, fat: 0.0, group: "Getränke" },
+  { id: "p447", name: "Protein-Kaffee (fertig)", kcal: 55, protein: 6.0, carbs: 4.0, fat: 1.5, group: "Getränke" },
+  { id: "p448", name: "Whiskey / Spirituose (Ø, 40%)", kcal: 250, protein: 0.0, carbs: 0.0, fat: 0.0, group: "Getränke" },
+  { id: "p449", name: "Gin Tonic", kcal: 95, protein: 0.0, carbs: 8.0, fat: 0.0, group: "Getränke" },
+  { id: "p450", name: "Avocado Toast", kcal: 220, protein: 6.0, carbs: 22.0, fat: 12.0, group: "Backwaren & Süßgebäck" },
+  { id: "p451", name: "Bircher Müsli", kcal: 150, protein: 5.0, carbs: 22.0, fat: 4.5, group: "Backwaren & Süßgebäck" },
+  { id: "p452", name: "Smoothie Bowl", kcal: 110, protein: 2.5, carbs: 20.0, fat: 2.0, group: "Backwaren & Süßgebäck" },
+  { id: "p453", name: "Granola-Riegel", kcal: 435, protein: 8.0, carbs: 62.0, fat: 17.0, group: "Backwaren & Süßgebäck" },
+  { id: "p454", name: "Ramen (Rind)", kcal: 135, protein: 7.0, carbs: 17.0, fat: 4.5, group: "Gerichte" },
+  { id: "p455", name: "Pho (Rindfleischsuppe)", kcal: 65, protein: 5.0, carbs: 8.0, fat: 1.5, group: "Gerichte" },
+  { id: "p456", name: "Bulgogi (koreanisch, Rind)", kcal: 195, protein: 15.0, carbs: 8.0, fat: 11.0, group: "Gerichte" },
+  { id: "p457", name: "Kimchi", kcal: 15, protein: 1.1, carbs: 2.4, fat: 0.5, group: "Gerichte" },
+  { id: "p458", name: "Katsu Curry", kcal: 200, protein: 9.0, carbs: 22.0, fat: 8.0, group: "Gerichte" },
+  { id: "p459", name: "Onigiri", kcal: 180, protein: 3.5, carbs: 39.0, fat: 0.5, group: "Gerichte" },
+  { id: "p460", name: "Tamales", kcal: 210, protein: 5.0, carbs: 28.0, fat: 9.0, group: "Gerichte" },
+  { id: "p461", name: "Empanadas", kcal: 260, protein: 7.0, carbs: 26.0, fat: 14.0, group: "Gerichte" },
+  { id: "p462", name: "Ceviche", kcal: 95, protein: 15.0, carbs: 5.0, fat: 1.5, group: "Gerichte" },
+  { id: "p463", name: "Paella", kcal: 155, protein: 9.0, carbs: 20.0, fat: 4.0, group: "Gerichte" },
+  { id: "p464", name: "Moussaka", kcal: 155, protein: 8.0, carbs: 8.0, fat: 10.0, group: "Gerichte" },
+  { id: "p465", name: "Souvlaki", kcal: 175, protein: 18.0, carbs: 3.0, fat: 10.0, group: "Gerichte" },
+  { id: "p466", name: "Borscht", kcal: 45, protein: 2.0, carbs: 7.0, fat: 1.0, group: "Gerichte" },
+  { id: "p467", name: "Pierogi (gefüllt, Kartoffel/Käse)", kcal: 200, protein: 6.0, carbs: 30.0, fat: 6.0, group: "Gerichte" },
+  { id: "p468", name: "Fish and Chips", kcal: 240, protein: 10.0, carbs: 22.0, fat: 13.0, group: "Gerichte" },
+  { id: "p469", name: "Shepherd's Pie", kcal: 130, protein: 7.0, carbs: 12.0, fat: 6.0, group: "Gerichte" },
+  { id: "p470", name: "Poutine", kcal: 210, protein: 5.0, carbs: 20.0, fat: 12.0, group: "Gerichte" },
+  { id: "p471", name: "Jambalaya", kcal: 140, protein: 8.0, carbs: 17.0, fat: 4.5, group: "Gerichte" },
+  { id: "p472", name: "Gumbo", kcal: 90, protein: 8.0, carbs: 6.0, fat: 4.0, group: "Gerichte" }
 ];
 
 var DEFAULT_GOAL = { kcal: 2200, protein: 140, carbs: 250, fat: 70 };
@@ -703,13 +774,17 @@ function groupDailyTotals(entries, range, viewDate, goalKcal) {
     });
   }
   if (range === "week") {
-    var wB = {};
-    sorted.forEach(function(e){ var wk = mondayOfWeek(e.date); (wB[wk] = wB[wk] || []).push(e); });
-    var wKeys = Object.keys(wB).sort().slice(-12);
-    return wKeys.map(function(k){
-      var arr = wB[k];
-      return { key: k, label: formatShortDate(k), kcal: round1(avg(arr.map(function(e){ return e.totals.kcal; }))), jumpDate: arr[arr.length-1].date, isBucketed: true, goalForBar: goalKcal };
-    });
+    // Zeigt die 7 Tage der Kalenderwoche, in der viewDate liegt, einzeln (kein Durchschnitt über mehrere Wochen).
+    var monday = mondayOfWeek(viewDate);
+    var byDateW = {};
+    sorted.forEach(function(e){ byDateW[e.date] = e.totals.kcal; });
+    var resW = [];
+    for (var wd = 0; wd < 7; wd++) {
+      var dkW = addDays(monday, wd);
+      var dObjW = new Date(dkW + "T00:00:00");
+      resW.push({ key: dkW, label: weekdayLabel(dObjW), kcal: round1(byDateW[dkW] || 0), jumpDate: dkW, isBucketed: false, goalForBar: goalKcal });
+    }
+    return resW;
   }
   if (range === "month") {
     // Zeigt jeden Kalendertag des Monats, in dem viewDate liegt, als eigenen Balken (kein Durchschnitt).
@@ -726,14 +801,15 @@ function groupDailyTotals(entries, range, viewDate, goalKcal) {
     return res;
   }
   if (range === "year") {
-    // Zeigt jeden Monat des Jahres, in dem viewDate liegt, als Summe (kein Durchschnitt).
+    // Zeigt jeden Monat des Jahres, in dem viewDate liegt, als Durchschnitt pro geloggtem Tag (keine Summe).
     var vy = new Date(viewDate + "T00:00:00").getFullYear();
     var byMonth = {};
     sorted.forEach(function(e){
       if (e.date.slice(0,4) === String(vy)) {
         var mk = e.date.slice(5,7);
-        if (!byMonth[mk]) byMonth[mk] = { sum: 0, last: e.date };
+        if (!byMonth[mk]) byMonth[mk] = { sum: 0, count: 0, last: e.date };
         byMonth[mk].sum += e.totals.kcal;
+        byMonth[mk].count += 1;
         if (e.date > byMonth[mk].last) byMonth[mk].last = e.date;
       }
     });
@@ -741,13 +817,12 @@ function groupDailyTotals(entries, range, viewDate, goalKcal) {
     for (var mi = 1; mi <= 12; mi++) {
       var mkk = String(mi).padStart(2, "0");
       var info = byMonth[mkk];
-      var dim = new Date(vy, mi, 0).getDate();
       res2.push({
         key: vy + "-" + mkk, label: MONTH_SHORT[mi-1],
-        kcal: info ? round1(info.sum) : 0,
+        kcal: info ? round1(info.sum / info.count) : 0,
         jumpDate: info ? info.last : (vy + "-" + mkk + "-01"),
         isBucketed: true,
-        goalForBar: goalKcal * dim
+        goalForBar: goalKcal
       });
     }
     return res2;
@@ -877,6 +952,7 @@ function NutritionTracker() {
   var showGoalEditState = useState(false), showGoalEdit = showGoalEditState[0], setShowGoalEdit = showGoalEditState[1];
   var goalDraftState = useState(DEFAULT_GOAL), goalDraft = goalDraftState[0], setGoalDraft = goalDraftState[1];
   var newFoodState = useState({ name: "", kcal: "", protein: "", carbs: "", fat: "" }), newFood = newFoodState[0], setNewFood = newFoodState[1];
+  var editingFoodIdState = useState(null), editingFoodId = editingFoodIdState[0], setEditingFoodId = editingFoodIdState[1];
   var errorState = useState(""), error = errorState[0], setError = errorState[1];
   var todayStr = todayKey();
   var viewDateState = useState(todayStr), viewDate = viewDateState[0], setViewDate = viewDateState[1];
@@ -1001,17 +1077,25 @@ function NutritionTracker() {
       setError("Bitte alle Felder für das eigene Produkt ausfüllen."); return;
     }
     setError("");
-    var food = {
-      id: "c" + uid(), name: name.trim(),
-      kcal: parseFloat(kcal) || 0, protein: parseFloat(protein) || 0, carbs: parseFloat(carbs) || 0, fat: parseFloat(fat) || 0,
-      group: "Eigene Produkte"
+    var vals = {
+      name: name.trim(),
+      kcal: parseFloat(kcal) || 0, protein: parseFloat(protein) || 0, carbs: parseFloat(carbs) || 0, fat: parseFloat(fat) || 0
     };
-    var updated = customFoods.concat([food]);
+    var updated, resultId;
+    if (editingFoodId) {
+      resultId = editingFoodId;
+      updated = customFoods.map(function (f) { return f.id === editingFoodId ? Object.assign({}, f, vals) : f; });
+    } else {
+      resultId = "c" + uid();
+      var food = Object.assign({ id: resultId, group: "Eigene Produkte" }, vals);
+      updated = customFoods.concat([food]);
+    }
     setCustomFoods(updated);
     await storageSet("custom-foods", updated);
     setSearch("");
-    setSelectedId(food.id);
+    setSelectedId(resultId);
     setNewFood({ name: "", kcal: "", protein: "", carbs: "", fat: "" });
+    setEditingFoodId(null);
     setShowAddFood(false);
   }
 
@@ -1146,7 +1230,7 @@ function NutritionTracker() {
       h("div", { className: "card" },
         h("div", { className: "card-row" },
           h("div", { className: "section-label mono" }, "PRODUKT HINZUFÜGEN"),
-          h("button", { className: "link-btn link-btn-blue mono", onClick: function () { setShowAddFood(true); } }, h(Plus, { size: 13 }), "eigenes Produkt")
+          h("button", { className: "link-btn link-btn-blue mono", onClick: function () { setEditingFoodId(null); setNewFood({ name: "", kcal: "", protein: "", carbs: "", fat: "" }); setShowAddFood(true); } }, h(Plus, { size: 13 }), "eigenes Produkt")
         ),
         h("div", { className: "add-row" },
           h("div", { className: "field-search" },
@@ -1181,7 +1265,17 @@ function NutritionTracker() {
         ),
         selectedFood ? h("div", { className: "selected-info mono" },
           h("span", null, selectedFood.name + " · pro 100g: " + selectedFood.kcal + " kcal · P" + selectedFood.protein + " · K" + selectedFood.carbs + " · F" + selectedFood.fat),
-          selectedFood.group === "Eigene Produkte" ? h("button", { className: "delete-link", onClick: function () { handleDeleteCustomFood(selectedFood.id); } }, h(Trash2, { size: 12 }), "löschen") : null
+          selectedFood.group === "Eigene Produkte" ? h("div", { style: { display: "flex", gap: 14 } },
+            h("button", {
+              className: "delete-link", style: { color: "#5B8FA3" },
+              onClick: function () {
+                setEditingFoodId(selectedFood.id);
+                setNewFood({ name: selectedFood.name, kcal: String(selectedFood.kcal), protein: String(selectedFood.protein), carbs: String(selectedFood.carbs), fat: String(selectedFood.fat) });
+                setShowAddFood(true);
+              }
+            }, h(Pencil, { size: 12 }), "bearbeiten"),
+            h("button", { className: "delete-link", onClick: function () { handleDeleteCustomFood(selectedFood.id); } }, h(Trash2, { size: 12 }), "löschen")
+          ) : null
         ) : null,
         error ? h("div", { className: "error-text" }, error) : null
       ),
@@ -1211,10 +1305,6 @@ function NutritionTracker() {
           h("span", { className: "mono muted", style: { fontSize: 12 } }, (function () {
             var active = overviewPoints.filter(function (p) { return p.kcal > 0; });
             if (active.length === 0) return "noch keine Daten";
-            if (overviewRange === "year") {
-              var total = active.reduce(function (s, p) { return s + p.kcal; }, 0);
-              return "Gesamt " + Math.round(total) + " kcal";
-            }
             var a = avg(active.map(function (p) { return p.kcal; }));
             return "Ø " + Math.round(a) + " kcal";
           })())
@@ -1230,24 +1320,31 @@ function NutritionTracker() {
         overviewPoints.length === 0
           ? h("div", { className: "log-empty" }, "Noch keine Daten vorhanden.")
           : h("div", { className: "week-bars", style: overviewPoints.length > 16 ? { gap: "3px" } : null },
-              overviewPoints.map(function (p) {
-                var barGoal = p.goalForBar || goal.kcal;
-                var pct = barGoal > 0 ? Math.min(p.kcal / barGoal, 1.2) : 0;
-                var over = p.kcal > barGoal;
-                var isViewDate = !p.isBucketed && p.key === viewDate;
-                var isToday = !p.isBucketed && p.key === todayStr;
-                var labelColor = isViewDate ? "#8FBC5A" : (isToday ? "#EDE8DE" : "#8A8579");
-                var labelBg = isViewDate ? "rgba(143,188,90,0.15)" : "transparent";
-                return h("div", { className: "week-col", key: p.key, onClick: function () { jumpToDay(p.jumpDate); }, title: "Zu diesem Tag springen" },
-                  h("span", { className: "week-val mono" }, p.kcal > 0 ? Math.round(p.kcal) : ""),
-                  h("div", { className: "week-bar", style: {
-                    height: Math.max(pct * 100, p.kcal > 0 ? 3 : 0) + "%",
-                    background: over ? "#C97B63" : "#8FBC5A",
-                    opacity: p.kcal > 0 ? 1 : 0.15
-                  } }),
-                  h("span", { className: "week-label mono", style: { color: labelColor, fontWeight: (isViewDate || isToday) ? 600 : 400, background: labelBg } }, p.label)
-                );
-              })
+              (function () {
+                var n = overviewPoints.length;
+                var labelStep = Math.max(1, Math.ceil(n / 8));
+                return overviewPoints.map(function (p, i) {
+                  var barGoal = p.goalForBar || goal.kcal;
+                  var pct = barGoal > 0 ? Math.min(p.kcal / barGoal, 1.2) : 0;
+                  var over = p.kcal > barGoal;
+                  var isViewDate = !p.isBucketed && p.key === viewDate;
+                  var isToday = !p.isBucketed && p.key === todayStr;
+                  var labelColor = isViewDate ? "#8FBC5A" : (isToday ? "#EDE8DE" : "#8A8579");
+                  var labelBg = isViewDate ? "rgba(143,188,90,0.15)" : "transparent";
+                  var showLabel = (i % labelStep === 0) || (i === n - 1);
+                  return h("div", { className: "week-col", key: p.key, onClick: function () { jumpToDay(p.jumpDate); }, title: "Zu diesem Tag springen" },
+                    h("span", { className: "week-val mono" }, (showLabel && p.kcal > 0) ? Math.round(p.kcal) : ""),
+                    h("div", { className: "week-bar", style: {
+                      height: Math.max(pct * 100, p.kcal > 0 ? 3 : 0) + "%",
+                      background: over ? "#C97B63" : "#8FBC5A",
+                      opacity: p.kcal > 0 ? 1 : 0.15
+                    } }),
+                    showLabel
+                      ? h("span", { className: "week-label mono", style: { color: labelColor, fontWeight: (isViewDate || isToday) ? 600 : 400, background: labelBg } }, p.label)
+                      : h("span", { className: "week-tick", style: { background: isViewDate ? "#8FBC5A" : "#4A463E" } })
+                  );
+                });
+              })()
             ),
         h("div", { className: "legend" },
           h("span", { className: "legend-item" }, h("span", { className: "legend-dot", style: { background: "#8FBC5A" } }), "im Ziel"),
@@ -1294,11 +1391,11 @@ function NutritionTracker() {
       )
     ),
 
-    showAddFood ? h("div", { className: "modal-overlay", onClick: function () { setShowAddFood(false); } },
+    showAddFood ? h("div", { className: "modal-overlay", onClick: function () { setShowAddFood(false); setEditingFoodId(null); } },
       h("div", { className: "modal", onClick: function (e) { e.stopPropagation(); } },
         h("div", { className: "modal-header" },
-          h("span", { className: "modal-title display" }, "Eigenes Produkt"),
-          h("button", { className: "modal-close", onClick: function () { setShowAddFood(false); } }, h(X, { size: 18 }))
+          h("span", { className: "modal-title display" }, editingFoodId ? "Produkt bearbeiten" : "Eigenes Produkt"),
+          h("button", { className: "modal-close", onClick: function () { setShowAddFood(false); setEditingFoodId(null); } }, h(X, { size: 18 }))
         ),
         h("div", { className: "field-col" },
           h("input", {
