@@ -1065,6 +1065,12 @@ function NutritionTracker() {
   var allFoods = useMemo(function () { return PRESET_FOODS.concat(customFoods); }, [customFoods]);
   var selectedFood = allFoods.find(function (f) { return f.id === selectedId; }) || allFoods[0];
 
+  useEffect(function () {
+    if (selectedFood && selectedFood.portionSize) {
+      setGrams(selectedFood.portionSize);
+    }
+  }, [selectedId]);
+
   var filteredFoods = useMemo(function () {
     if (!search.trim()) return allFoods;
     var s = search.toLowerCase();
@@ -1144,7 +1150,8 @@ function NutritionTracker() {
       var f = 100 / portionG;
       vals = {
         name: name.trim(),
-        kcal: Math.round(rawKcal * f), protein: round1(rawProtein * f), carbs: round1(rawCarbs * f), fat: round1(rawFat * f)
+        kcal: Math.round(rawKcal * f), protein: round1(rawProtein * f), carbs: round1(rawCarbs * f), fat: round1(rawFat * f),
+        portionSize: portionG
       };
     } else {
       vals = { name: name.trim(), kcal: rawKcal, protein: rawProtein, carbs: rawCarbs, fat: rawFat };
@@ -1334,15 +1341,28 @@ function NutritionTracker() {
           h("button", { className: "btn-primary", onClick: handleAddEntry }, h(Plus, { size: 15 }), "hinzufügen")
         ),
         selectedFood ? h("div", { className: "selected-info mono" },
-          h("span", null, selectedFood.name + " · pro 100g: " + selectedFood.kcal + " kcal · P" + selectedFood.protein + " · K" + selectedFood.carbs + " · F" + selectedFood.fat),
+          h("span", null, selectedFood.name + " · pro 100g: " + selectedFood.kcal + " kcal · P" + selectedFood.protein + " · K" + selectedFood.carbs + " · F" + selectedFood.fat + (selectedFood.portionSize ? (" · 1 Portion = " + selectedFood.portionSize + "g") : "")),
           selectedFood.group === "Eigene Produkte" ? h("div", { style: { display: "flex", gap: 14 } },
             h("button", {
               className: "delete-link", style: { color: "#5B8FA3" },
               onClick: function () {
                 setEditingFoodId(selectedFood.id);
-                setNewFood({ name: selectedFood.name, kcal: String(selectedFood.kcal), protein: String(selectedFood.protein), carbs: String(selectedFood.carbs), fat: String(selectedFood.fat) });
-                setFoodEntryMode("per100");
-                setPortionGrams("");
+                if (selectedFood.portionSize) {
+                  var pf = selectedFood.portionSize / 100;
+                  setFoodEntryMode("portion");
+                  setPortionGrams(String(selectedFood.portionSize));
+                  setNewFood({
+                    name: selectedFood.name,
+                    kcal: String(Math.round(selectedFood.kcal * pf)),
+                    protein: String(round1(selectedFood.protein * pf)),
+                    carbs: String(round1(selectedFood.carbs * pf)),
+                    fat: String(round1(selectedFood.fat * pf))
+                  });
+                } else {
+                  setFoodEntryMode("per100");
+                  setPortionGrams("");
+                  setNewFood({ name: selectedFood.name, kcal: String(selectedFood.kcal), protein: String(selectedFood.protein), carbs: String(selectedFood.carbs), fat: String(selectedFood.fat) });
+                }
                 setShowAddFood(true);
               }
             }, h(Pencil, { size: 12 }), "bearbeiten"),
