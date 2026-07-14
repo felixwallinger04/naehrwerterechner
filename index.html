@@ -1005,6 +1005,8 @@ function NutritionTracker() {
   var goalDraftState = useState(DEFAULT_GOAL), goalDraft = goalDraftState[0], setGoalDraft = goalDraftState[1];
   var newFoodState = useState({ name: "", kcal: "", protein: "", carbs: "", fat: "" }), newFood = newFoodState[0], setNewFood = newFoodState[1];
   var editingFoodIdState = useState(null), editingFoodId = editingFoodIdState[0], setEditingFoodId = editingFoodIdState[1];
+  var foodEntryModeState = useState("per100"), foodEntryMode = foodEntryModeState[0], setFoodEntryMode = foodEntryModeState[1];
+  var portionGramsState = useState(""), portionGrams = portionGramsState[0], setPortionGrams = portionGramsState[1];
   var errorState = useState(""), error = errorState[0], setError = errorState[1];
   var todayStr = todayKey();
   var viewDateState = useState(todayStr), viewDate = viewDateState[0], setViewDate = viewDateState[1];
@@ -1128,15 +1130,29 @@ function NutritionTracker() {
     if (!name.trim() || kcal === "" || protein === "" || carbs === "" || fat === "") {
       setError("Bitte alle Felder für das eigene Produkt ausfüllen."); return;
     }
+    var portionG = null;
+    if (foodEntryMode === "portion") {
+      portionG = parseFloat(portionGrams);
+      if (!portionG || portionG <= 0) {
+        setError("Bitte eine gültige Portionsgröße in Gramm angeben."); return;
+      }
+    }
     setError("");
-    var vals = {
-      name: name.trim(),
-      kcal: parseFloat(kcal) || 0, protein: parseFloat(protein) || 0, carbs: parseFloat(carbs) || 0, fat: parseFloat(fat) || 0
-    };
+    var rawKcal = parseFloat(kcal) || 0, rawProtein = parseFloat(protein) || 0, rawCarbs = parseFloat(carbs) || 0, rawFat = parseFloat(fat) || 0;
+    var vals;
+    if (foodEntryMode === "portion") {
+      var f = 100 / portionG;
+      vals = {
+        name: name.trim(),
+        kcal: Math.round(rawKcal * f), protein: round1(rawProtein * f), carbs: round1(rawCarbs * f), fat: round1(rawFat * f)
+      };
+    } else {
+      vals = { name: name.trim(), kcal: rawKcal, protein: rawProtein, carbs: rawCarbs, fat: rawFat };
+    }
     var updated, resultId;
     if (editingFoodId) {
       resultId = editingFoodId;
-      updated = customFoods.map(function (f) { return f.id === editingFoodId ? Object.assign({}, f, vals) : f; });
+      updated = customFoods.map(function (f2) { return f2.id === editingFoodId ? Object.assign({}, f2, vals) : f2; });
     } else {
       resultId = "c" + uid();
       var food = Object.assign({ id: resultId, group: "Eigene Produkte" }, vals);
@@ -1147,6 +1163,8 @@ function NutritionTracker() {
     setSearch("");
     setSelectedId(resultId);
     setNewFood({ name: "", kcal: "", protein: "", carbs: "", fat: "" });
+    setPortionGrams("");
+    setFoodEntryMode("per100");
     setEditingFoodId(null);
     setShowAddFood(false);
   }
@@ -1282,7 +1300,7 @@ function NutritionTracker() {
       h("div", { className: "card" },
         h("div", { className: "card-row" },
           h("div", { className: "section-label mono" }, "PRODUKT HINZUFÜGEN"),
-          h("button", { className: "link-btn link-btn-blue mono", onClick: function () { setEditingFoodId(null); setNewFood({ name: "", kcal: "", protein: "", carbs: "", fat: "" }); setShowAddFood(true); } }, h(Plus, { size: 13 }), "eigenes Produkt")
+          h("button", { className: "link-btn link-btn-blue mono", onClick: function () { setEditingFoodId(null); setNewFood({ name: "", kcal: "", protein: "", carbs: "", fat: "" }); setFoodEntryMode("per100"); setPortionGrams(""); setShowAddFood(true); } }, h(Plus, { size: 13 }), "eigenes Produkt")
         ),
         h("div", { className: "add-row" },
           h("div", { className: "field-search" },
@@ -1323,6 +1341,8 @@ function NutritionTracker() {
               onClick: function () {
                 setEditingFoodId(selectedFood.id);
                 setNewFood({ name: selectedFood.name, kcal: String(selectedFood.kcal), protein: String(selectedFood.protein), carbs: String(selectedFood.carbs), fat: String(selectedFood.fat) });
+                setFoodEntryMode("per100");
+                setPortionGrams("");
                 setShowAddFood(true);
               }
             }, h(Pencil, { size: 12 }), "bearbeiten"),
@@ -1454,7 +1474,18 @@ function NutritionTracker() {
             className: "input", placeholder: "Name", value: newFood.name,
             onChange: function (e) { setNewFood(Object.assign({}, newFood, { name: e.target.value })); }
           }),
-          h("div", { className: "field-hint mono" }, "Werte pro 100 g"),
+          h("div", { className: "range-toggle", style: { marginBottom: 0 } },
+            h("button", { className: "range-btn" + (foodEntryMode === "per100" ? " active" : ""), onClick: function () { setFoodEntryMode("per100"); } }, "Pro 100 g"),
+            h("button", { className: "range-btn" + (foodEntryMode === "portion" ? " active" : ""), onClick: function () { setFoodEntryMode("portion"); } }, "Pro Portion")
+          ),
+          foodEntryMode === "portion" ? h("div", { className: "field-rel" },
+            h("input", {
+              type: "number", className: "input mono", placeholder: "Portionsgröße", value: portionGrams,
+              onChange: function (e) { setPortionGrams(e.target.value); }
+            }),
+            h("span", { className: "field-unit" }, "g")
+          ) : null,
+          h("div", { className: "field-hint mono" }, foodEntryMode === "portion" ? "Werte für die gesamte Portion (z. B. Kantinengericht)" : "Werte pro 100 g"),
           h("div", { className: "field-grid2" },
             ["kcal", "protein", "carbs", "fat"].map(function (k) {
               return h("div", { className: "field-rel", key: k },
