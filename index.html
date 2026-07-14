@@ -92,7 +92,7 @@
   .week-col:hover { background: rgba(255,255,255,0.03); }
   .week-val { font-size: 10px; color: #8A8579; margin-bottom: 4px; height: 12px; overflow: hidden; white-space: nowrap; }
   .week-bar { width: 100%; border-radius: 6px 6px 0 0; transition: height .3s ease; min-height: 0; }
-  .week-label { font-size: 11px; margin-top: 8px; padding: 2px 6px; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .week-label { font-size: 11px; margin-top: 8px; padding: 2px 5px; border-radius: 8px; white-space: nowrap; overflow: visible; }
   .week-tick { width: 3px; height: 3px; border-radius: 50%; background: #4A463E; margin-top: 8px; display: inline-block; }
   .legend { display: flex; align-items: center; gap: 16px; margin-top: 16px; font-size: 10px; color: #8A8579; flex-wrap: wrap; }
   .legend-item { display: flex; align-items: center; gap: 6px; }
@@ -681,7 +681,59 @@ var PRESET_FOODS = [
   { id: "p469", name: "Shepherd's Pie", kcal: 130, protein: 7.0, carbs: 12.0, fat: 6.0, group: "Gerichte" },
   { id: "p470", name: "Poutine", kcal: 210, protein: 5.0, carbs: 20.0, fat: 12.0, group: "Gerichte" },
   { id: "p471", name: "Jambalaya", kcal: 140, protein: 8.0, carbs: 17.0, fat: 4.5, group: "Gerichte" },
-  { id: "p472", name: "Gumbo", kcal: 90, protein: 8.0, carbs: 6.0, fat: 4.0, group: "Gerichte" }
+  { id: "p472", name: "Gumbo", kcal: 90, protein: 8.0, carbs: 6.0, fat: 4.0, group: "Gerichte" },
+  { id: "p473", name: "Karpfen (gegart)", kcal: 112, protein: 18.0, carbs: 0.0, fat: 4.8, group: "Fleisch & Fisch" },
+  { id: "p474", name: "Hecht (gegart)", kcal: 88, protein: 19.0, carbs: 0.0, fat: 0.9, group: "Fleisch & Fisch" },
+  { id: "p475", name: "Riesengarnelen (gegart)", kcal: 106, protein: 20.0, carbs: 1.0, fat: 1.7, group: "Fleisch & Fisch" },
+  { id: "p476", name: "Brunnenkresse", kcal: 11, protein: 2.3, carbs: 1.3, fat: 0.1, group: "Gemüse" },
+  { id: "p477", name: "Chicorée", kcal: 17, protein: 1.0, carbs: 2.9, fat: 0.1, group: "Gemüse" },
+  { id: "p478", name: "Endiviensalat", kcal: 17, protein: 1.7, carbs: 2.9, fat: 0.2, group: "Gemüse" },
+  { id: "p479", name: "Radicchio", kcal: 23, protein: 1.4, carbs: 4.5, fat: 0.3, group: "Gemüse" },
+  { id: "p480", name: "Jackfrucht", kcal: 95, protein: 1.7, carbs: 23.3, fat: 0.6, group: "Obst" },
+  { id: "p481", name: "Drachenfrucht (Pitahaya)", kcal: 60, protein: 1.2, carbs: 13.0, fat: 0.4, group: "Obst" },
+  { id: "p482", name: "Feijoa", kcal: 55, protein: 1.0, carbs: 13.0, fat: 0.6, group: "Obst" },
+  { id: "p483", name: "Ziegenkäse", kcal: 364, protein: 21.6, carbs: 0.1, fat: 30.5, group: "Eier & Milch" },
+  { id: "p484", name: "Schafskäse", kcal: 353, protein: 17.9, carbs: 0.4, fat: 30.7, group: "Eier & Milch" },
+  { id: "p485", name: "Roquefort", kcal: 369, protein: 19.7, carbs: 2.0, fat: 30.6, group: "Eier & Milch" },
+  { id: "p486", name: "Gorgonzola", kcal: 350, protein: 19.4, carbs: 0.0, fat: 30.0, group: "Eier & Milch" },
+  { id: "p487", name: "Beef Jerky", kcal: 410, protein: 33.0, carbs: 11.0, fat: 26.0, group: "Fette & Süßes" },
+  { id: "p488", name: "Rice Crispy Treats", kcal: 380, protein: 2.5, carbs: 79.0, fat: 6.5, group: "Fette & Süßes" },
+  { id: "p489", name: "Churros", kcal: 380, protein: 5.0, carbs: 45.0, fat: 20.0, group: "Fette & Süßes" },
+  { id: "p490", name: "Aperol Spritz", kcal: 90, protein: 0.0, carbs: 8.0, fat: 0.0, group: "Getränke" },
+  { id: "p491", name: "Radler", kcal: 34, protein: 0.3, carbs: 6.0, fat: 0.0, group: "Getränke" },
+  { id: "p492", name: "Alkoholfreies Bier", kcal: 25, protein: 0.3, carbs: 5.5, fat: 0.0, group: "Getränke" },
+  { id: "p493", name: "Chai Latte", kcal: 60, protein: 2.5, carbs: 9.0, fat: 1.8, group: "Getränke" },
+  { id: "p494", name: "Matcha Latte", kcal: 55, protein: 2.8, carbs: 7.0, fat: 1.5, group: "Getränke" },
+  { id: "p495", name: "Kartoffelgratin", kcal: 155, protein: 4.0, carbs: 14.0, fat: 9.0, group: "Gerichte" },
+  { id: "p496", name: "Gratin Dauphinois", kcal: 165, protein: 4.5, carbs: 13.0, fat: 11.0, group: "Gerichte" },
+  { id: "p497", name: "Flammkuchen", kcal: 250, protein: 8.0, carbs: 25.0, fat: 13.0, group: "Gerichte" },
+  { id: "p498", name: "Pizza Salami", kcal: 275, protein: 12.0, carbs: 28.0, fat: 13.0, group: "Gerichte" },
+  { id: "p499", name: "Pizza Diavola", kcal: 265, protein: 12.0, carbs: 27.0, fat: 12.0, group: "Gerichte" },
+  { id: "p500", name: "Calzone", kcal: 260, protein: 11.0, carbs: 30.0, fat: 10.0, group: "Gerichte" },
+  { id: "p501", name: "Risotto Milanese", kcal: 165, protein: 4.5, carbs: 24.0, fat: 5.5, group: "Gerichte" },
+  { id: "p502", name: "Vitello Tonnato", kcal: 165, protein: 15.0, carbs: 3.0, fat: 10.0, group: "Gerichte" },
+  { id: "p503", name: "Carpaccio (Rind)", kcal: 140, protein: 20.0, carbs: 1.0, fat: 6.0, group: "Gerichte" },
+  { id: "p504", name: "Antipasti-Teller (Ø)", kcal: 190, protein: 6.0, carbs: 8.0, fat: 15.0, group: "Gerichte" },
+  { id: "p505", name: "Käsefondue", kcal: 300, protein: 16.0, carbs: 6.0, fat: 23.0, group: "Gerichte" },
+  { id: "p506", name: "Raclette-Teller", kcal: 220, protein: 14.0, carbs: 8.0, fat: 15.0, group: "Gerichte" },
+  { id: "p507", name: "Chicken Alfredo", kcal: 195, protein: 11.0, carbs: 16.0, fat: 10.0, group: "Gerichte" },
+  { id: "p508", name: "Beef Stroganoff", kcal: 175, protein: 13.0, carbs: 6.0, fat: 11.0, group: "Gerichte" },
+  { id: "p509", name: "Coq au Vin", kcal: 160, protein: 16.0, carbs: 3.0, fat: 9.0, group: "Gerichte" },
+  { id: "p510", name: "Bouillabaisse", kcal: 85, protein: 12.0, carbs: 3.0, fat: 2.5, group: "Gerichte" },
+  { id: "p511", name: "Jerk Chicken", kcal: 175, protein: 20.0, carbs: 4.0, fat: 8.0, group: "Gerichte" },
+  { id: "p512", name: "Fajitas (Hähnchen)", kcal: 155, protein: 11.0, carbs: 12.0, fat: 6.5, group: "Gerichte" },
+  { id: "p513", name: "Flan", kcal: 145, protein: 4.0, carbs: 22.0, fat: 4.5, group: "Gerichte" },
+  { id: "p514", name: "Panna Cotta", kcal: 200, protein: 3.0, carbs: 17.0, fat: 13.0, group: "Gerichte" },
+  { id: "p515", name: "Crème Brûlée", kcal: 285, protein: 4.0, carbs: 21.0, fat: 21.0, group: "Gerichte" },
+  { id: "p516", name: "Apfelstrudel", kcal: 220, protein: 3.0, carbs: 30.0, fat: 10.0, group: "Gerichte" },
+  { id: "p517", name: "Topfenstrudel", kcal: 235, protein: 6.0, carbs: 28.0, fat: 11.0, group: "Gerichte" },
+  { id: "p518", name: "Palatschinken", kcal: 220, protein: 6.0, carbs: 27.0, fat: 9.0, group: "Gerichte" },
+  { id: "p519", name: "Marillenknödel", kcal: 210, protein: 4.0, carbs: 38.0, fat: 5.0, group: "Gerichte" },
+  { id: "p520", name: "Germknödel", kcal: 260, protein: 6.0, carbs: 42.0, fat: 8.0, group: "Gerichte" },
+  { id: "p521", name: "Overnight Oats", kcal: 150, protein: 6.0, carbs: 20.0, fat: 5.0, group: "Gerichte" },
+  { id: "p522", name: "Rühreier mit Speck", kcal: 220, protein: 15.0, carbs: 1.5, fat: 17.0, group: "Gerichte" },
+  { id: "p523", name: "Fischsuppe", kcal: 55, protein: 7.0, carbs: 3.0, fat: 1.8, group: "Gerichte" },
+  { id: "p524", name: "Zwiebelsuppe (überbacken)", kcal: 105, protein: 4.5, carbs: 9.0, fat: 5.5, group: "Gerichte" }
 ];
 
 var DEFAULT_GOAL = { kcal: 2200, protein: 140, carbs: 250, fat: 70 };
