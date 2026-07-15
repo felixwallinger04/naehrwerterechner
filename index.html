@@ -33,6 +33,7 @@
   .day-date-input { background: #2C2A26; border: 1px solid #4A463E; border-radius: 8px; padding: 8px 10px; color: #F7F4EC; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color-scheme: dark; }
   .today-btn { font-size: 11px; color: #8FBC5A; background: rgba(143,188,90,0.12); border: none; border-radius: 20px; padding: 6px 12px; cursor: pointer; font-family: 'JetBrains Mono', monospace; }
   .viewing-past-badge { font-size: 11px; color: #E8A33D; background: rgba(232,163,61,0.12); border-radius: 20px; padding: 6px 12px; font-family: 'JetBrains Mono', monospace; }
+  .restore-btn { font-size: 11px; color: #5B8FA3; background: rgba(91,143,163,0.14); border: none; border-radius: 20px; padding: 6px 12px; cursor: pointer; font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 6px; }
 
   .card { background: #242220; border: 1px solid #33312C; border-radius: 16px; padding: 20px; margin-bottom: 24px; }
   .card-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px; flex-wrap: wrap; }
@@ -90,7 +91,7 @@
   .week-bars { display: flex; align-items: flex-end; gap: 8px; height: 144px; }
   .week-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; cursor: pointer; border-radius: 6px; padding-top: 4px; min-width: 0; }
   .week-col:hover { background: rgba(255,255,255,0.03); }
-  .week-val { font-size: 10px; color: #8A8579; margin-bottom: 4px; height: 12px; overflow: hidden; white-space: nowrap; }
+  .week-val { font-size: 10px; color: #8A8579; margin-bottom: 8px; height: 12px; overflow: hidden; white-space: nowrap; }
   .week-bar { width: 100%; border-radius: 6px 6px 0 0; transition: height .3s ease; min-height: 0; }
   .week-label { font-size: 11px; margin-top: 8px; padding: 2px 5px; border-radius: 8px; white-space: nowrap; overflow: visible; }
   .week-tick { width: 3px; height: 3px; border-radius: 50%; background: #4A463E; margin-top: 8px; display: inline-block; }
@@ -200,6 +201,7 @@ function Trash2(p) { return h(Icon, p,
   h("path", {d:"M19 6l-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6"})
 ); }
 function RotateCcw(p) { return h(Icon, p, h("polyline", {points:"1 4 1 10 7 10"}), h("path", {d:"M3.51 15a9 9 0 1 0 2.13-9.36L1 10"})); }
+function RotateCw(p) { return h(Icon, p, h("polyline", {points:"23 4 23 10 17 10"}), h("path", {d:"M20.49 15a9 9 0 1 1-2.12-9.36L23 10"})); }
 function Target(p) { return h(Icon, p, h("circle", {cx:12,cy:12,r:9}), h("circle", {cx:12,cy:12,r:5}), h("circle", {cx:12,cy:12,r:1,fill:"currentColor"})); }
 function Flame(p) { return h(Icon, p, h("path", {d:"M12 2c2 4-3 6-3 10a3 3 0 1 0 6 0c0-1.5-1-2.5-1-4 2 1 4 3.5 4 7a6 6 0 1 1-12 0c0-5 4-8 6-13z"})); }
 function Drumstick(p) { return h(Icon, p, h("circle", {cx:9,cy:9,r:5}), h("path", {d:"M13 13l6 6"}), h("circle", {cx:19.5,cy:19.5,r:1.5,fill:"currentColor"})); }
@@ -733,7 +735,45 @@ var PRESET_FOODS = [
   { id: "p521", name: "Overnight Oats", kcal: 150, protein: 6.0, carbs: 20.0, fat: 5.0, group: "Gerichte" },
   { id: "p522", name: "Rühreier mit Speck", kcal: 220, protein: 15.0, carbs: 1.5, fat: 17.0, group: "Gerichte" },
   { id: "p523", name: "Fischsuppe", kcal: 55, protein: 7.0, carbs: 3.0, fat: 1.8, group: "Gerichte" },
-  { id: "p524", name: "Zwiebelsuppe (überbacken)", kcal: 105, protein: 4.5, carbs: 9.0, fat: 5.5, group: "Gerichte" }
+  { id: "p524", name: "Zwiebelsuppe (überbacken)", kcal: 105, protein: 4.5, carbs: 9.0, fat: 5.5, group: "Gerichte" },
+  { id: "p525", name: "Wiener Schnitzel (Kalb, paniert)", kcal: 250, protein: 22.0, carbs: 14.0, fat: 13.0, group: "Gerichte" },
+  { id: "p526", name: "Tafelspitz", kcal: 195, protein: 22.0, carbs: 2.0, fat: 11.0, group: "Gerichte" },
+  { id: "p527", name: "Zwiebelrostbraten", kcal: 220, protein: 22.0, carbs: 6.0, fat: 12.0, group: "Gerichte" },
+  { id: "p528", name: "Backhendl", kcal: 280, protein: 22.0, carbs: 14.0, fat: 16.0, group: "Gerichte" },
+  { id: "p529", name: "Erdäpfelgulasch", kcal: 95, protein: 3.0, carbs: 14.0, fat: 3.0, group: "Gerichte" },
+  { id: "p530", name: "Fiakergulasch", kcal: 145, protein: 12.0, carbs: 7.0, fat: 8.0, group: "Gerichte" },
+  { id: "p531", name: "Bauernschmaus", kcal: 260, protein: 18.0, carbs: 8.0, fat: 17.0, group: "Gerichte" },
+  { id: "p532", name: "Blunzengröstl", kcal: 260, protein: 12.0, carbs: 15.0, fat: 17.0, group: "Gerichte" },
+  { id: "p533", name: "Frittatensuppe", kcal: 35, protein: 2.0, carbs: 3.0, fat: 1.8, group: "Gerichte" },
+  { id: "p534", name: "Leberknödelsuppe", kcal: 60, protein: 5.0, carbs: 6.0, fat: 2.0, group: "Gerichte" },
+  { id: "p535", name: "Grießnockerlsuppe", kcal: 45, protein: 2.0, carbs: 5.0, fat: 1.8, group: "Gerichte" },
+  { id: "p536", name: "Eierschwammerlgulasch", kcal: 110, protein: 4.0, carbs: 6.0, fat: 8.0, group: "Gerichte" },
+  { id: "p537", name: "Powidltascherl", kcal: 220, protein: 5.0, carbs: 40.0, fat: 5.0, group: "Gerichte" },
+  { id: "p538", name: "Buchteln", kcal: 280, protein: 6.0, carbs: 42.0, fat: 9.0, group: "Gerichte" },
+  { id: "p539", name: "Salzburger Nockerl", kcal: 240, protein: 6.0, carbs: 28.0, fat: 11.0, group: "Gerichte" },
+  { id: "p540", name: "Sachertorte", kcal: 340, protein: 5.0, carbs: 40.0, fat: 18.0, group: "Gerichte" },
+  { id: "p541", name: "Linzer Torte", kcal: 400, protein: 5.0, carbs: 48.0, fat: 21.0, group: "Gerichte" },
+  { id: "p542", name: "Topfenknödel", kcal: 210, protein: 8.0, carbs: 30.0, fat: 6.0, group: "Gerichte" },
+  { id: "p543", name: "Zwetschkenknödel", kcal: 205, protein: 4.0, carbs: 37.0, fat: 5.0, group: "Gerichte" },
+  { id: "p544", name: "Krautfleckerl", kcal: 165, protein: 5.0, carbs: 22.0, fat: 6.0, group: "Gerichte" },
+  { id: "p545", name: "Schinkenfleckerl", kcal: 220, protein: 10.0, carbs: 22.0, fat: 10.0, group: "Gerichte" },
+  { id: "p546", name: "Debreziner", kcal: 290, protein: 12.0, carbs: 2.0, fat: 25.0, group: "Gerichte" },
+  { id: "p547", name: "Käsekrainer", kcal: 310, protein: 13.0, carbs: 2.0, fat: 27.0, group: "Gerichte" },
+  { id: "p548", name: "Selchfleisch", kcal: 190, protein: 24.0, carbs: 0.0, fat: 10.0, group: "Gerichte" },
+  { id: "p549", name: "Extrawurst", kcal: 260, protein: 12.0, carbs: 2.0, fat: 22.0, group: "Gerichte" },
+  { id: "p550", name: "Leberkässemmel", kcal: 300, protein: 13.0, carbs: 25.0, fat: 16.0, group: "Gerichte" },
+  { id: "p551", name: "Punschkrapfen", kcal: 380, protein: 3.0, carbs: 55.0, fat: 16.0, group: "Gerichte" },
+  { id: "p552", name: "Mohnnudeln", kcal: 320, protein: 7.0, carbs: 45.0, fat: 12.0, group: "Gerichte" },
+  { id: "p553", name: "Tiroler Gröstl", kcal: 190, protein: 9.0, carbs: 16.0, fat: 10.0, group: "Gerichte" },
+  { id: "p554", name: "Kärntner Kasnudeln", kcal: 210, protein: 8.0, carbs: 28.0, fat: 7.0, group: "Gerichte" },
+  { id: "p555", name: "Bosna", kcal: 260, protein: 13.0, carbs: 20.0, fat: 14.0, group: "Gerichte" },
+  { id: "p556", name: "Eierspeis", kcal: 160, protein: 12.0, carbs: 1.0, fat: 12.0, group: "Gerichte" },
+  { id: "p557", name: "Liptauer", kcal: 230, protein: 9.0, carbs: 4.0, fat: 20.0, group: "Gerichte" },
+  { id: "p558", name: "Kaspressknödel", kcal: 230, protein: 10.0, carbs: 24.0, fat: 10.0, group: "Gerichte" },
+  { id: "p559", name: "Steirischer Kernölsalat", kcal: 130, protein: 2.0, carbs: 6.0, fat: 11.0, group: "Gerichte" },
+  { id: "p560", name: "Verhackertes", kcal: 420, protein: 12.0, carbs: 1.0, fat: 40.0, group: "Fette & Süßes" },
+  { id: "p561", name: "Kürbiskernöl", kcal: 884, protein: 0.0, carbs: 0.0, fat: 100.0, group: "Fette & Süßes" },
+  { id: "p562", name: "Marillenmarmelade", kcal: 250, protein: 0.3, carbs: 62.0, fat: 0.1, group: "Fette & Süßes" }
 ];
 
 var DEFAULT_GOAL = { kcal: 2200, protein: 140, carbs: 250, fat: 70 };
@@ -792,28 +832,29 @@ function monthLabel(mk) {
 function groupWeightData(entries, range) {
   if (!entries.length) return [];
   var sorted = entries.slice().sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
+  function toTime(dateStr) { return new Date(dateStr + "T00:00:00").getTime(); }
   if (range === "day") {
-    return sorted.slice(-30).map(function(e){ return { x: formatShortDate(e.date), y: e.weight }; });
+    return sorted.slice(-30).map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date) }; });
   }
   if (range === "week") {
     var wBuckets = {};
     sorted.forEach(function(e){ var wk = mondayOfWeek(e.date); (wBuckets[wk] = wBuckets[wk] || []).push(e.weight); });
     var wKeys = Object.keys(wBuckets).sort();
-    return wKeys.slice(-26).map(function(k){ return { x: formatShortDate(k), y: round1(avg(wBuckets[k])) }; });
+    return wKeys.slice(-26).map(function(k){ return { x: formatShortDate(k), y: round1(avg(wBuckets[k])), t: toTime(k) }; });
   }
   if (range === "month") {
     var mBuckets = {};
     sorted.forEach(function(e){ var mk = e.date.slice(0,7); (mBuckets[mk] = mBuckets[mk] || []).push(e.weight); });
     var mKeys = Object.keys(mBuckets).sort();
-    return mKeys.slice(-24).map(function(k){ return { x: monthLabel(k), y: round1(avg(mBuckets[k])) }; });
+    return mKeys.slice(-24).map(function(k){ return { x: monthLabel(k), y: round1(avg(mBuckets[k])), t: toTime(k + "-15") }; });
   }
   if (range === "year") {
     var yBuckets = {};
     sorted.forEach(function(e){ var yk = e.date.slice(0,4); (yBuckets[yk] = yBuckets[yk] || []).push(e.weight); });
     var yKeys = Object.keys(yBuckets).sort();
-    return yKeys.map(function(k){ return { x: k, y: round1(avg(yBuckets[k])) }; });
+    return yKeys.map(function(k){ return { x: k, y: round1(avg(yBuckets[k])), t: toTime(k + "-07-01") }; });
   }
-  return sorted.map(function(e){ return { x: formatShortDate(e.date), y: e.weight }; });
+  return sorted.map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date) }; });
 }
 function groupDailyTotals(entries, range, viewDate, goalKcal) {
   var sorted = entries.slice().sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
@@ -948,7 +989,15 @@ function LineChart(props) {
   var rangeV = maxV - minV;
   var n = points.length;
 
-  function xPos(i) { return n === 1 ? padLeft + (W - padLeft - padRight) / 2 : padLeft + (i / (n - 1)) * (W - padLeft - padRight); }
+  var times = points.map(function (p) { return p.t; });
+  var minT = Math.min.apply(null, times);
+  var maxT = Math.max.apply(null, times);
+  var rangeT = maxT - minT;
+
+  function xPos(i) {
+    if (n === 1 || rangeT === 0) return padLeft + (W - padLeft - padRight) / 2;
+    return padLeft + ((points[i].t - minT) / rangeT) * (W - padLeft - padRight);
+  }
   function yPos(v) { return padTop + (1 - (v - minV) / rangeV) * (H - padTop - padBottom); }
 
   var pathD = points.map(function (p, i) {
@@ -1002,6 +1051,7 @@ function NutritionTracker() {
   var gramsState = useState(100), grams = gramsState[0], setGrams = gramsState[1];
   var showAddFoodState = useState(false), showAddFood = showAddFoodState[0], setShowAddFood = showAddFoodState[1];
   var showGoalEditState = useState(false), showGoalEdit = showGoalEditState[0], setShowGoalEdit = showGoalEditState[1];
+  var lastResetSnapshotState = useState(null), lastResetSnapshot = lastResetSnapshotState[0], setLastResetSnapshot = lastResetSnapshotState[1];
   var goalDraftState = useState(DEFAULT_GOAL), goalDraft = goalDraftState[0], setGoalDraft = goalDraftState[1];
   var newFoodState = useState({ name: "", kcal: "", protein: "", carbs: "", fat: "" }), newFood = newFoodState[0], setNewFood = newFoodState[1];
   var editingFoodIdState = useState(null), editingFoodId = editingFoodIdState[0], setEditingFoodId = editingFoodIdState[1];
@@ -1062,7 +1112,16 @@ function NutritionTracker() {
     setWeightError("");
   }, [viewDate, weightLog]);
 
-  var allFoods = useMemo(function () { return PRESET_FOODS.concat(customFoods); }, [customFoods]);
+  var allFoods = useMemo(function () {
+    var overrides = {};
+    var pureCustom = [];
+    customFoods.forEach(function (cf) {
+      if (cf.id.charAt(0) === "p") overrides[cf.id] = cf;
+      else pureCustom.push(cf);
+    });
+    var merged = PRESET_FOODS.map(function (pf) { return overrides[pf.id] || pf; });
+    return merged.concat(pureCustom);
+  }, [customFoods]);
   var selectedFood = allFoods.find(function (f) { return f.id === selectedId; }) || allFoods[0];
 
   useEffect(function () {
@@ -1116,6 +1175,7 @@ function NutritionTracker() {
     setLog(newLog);
     await storageSet("log:" + viewDate, newLog);
     patchDailyTotals(viewDate, newLog);
+    if (lastResetSnapshot && lastResetSnapshot.date === viewDate) setLastResetSnapshot(null);
   }
 
   async function handleRemoveEntry(id) {
@@ -1123,12 +1183,28 @@ function NutritionTracker() {
     setLog(newLog);
     await storageSet("log:" + viewDate, newLog);
     patchDailyTotals(viewDate, newLog);
+    if (lastResetSnapshot && lastResetSnapshot.date === viewDate) setLastResetSnapshot(null);
   }
 
   async function handleResetDay() {
+    setLastResetSnapshot({ date: viewDate, log: log });
     setLog([]);
     await storageSet("log:" + viewDate, []);
     patchDailyTotals(viewDate, []);
+  }
+
+  async function handleRestoreDay() {
+    if (!lastResetSnapshot) return;
+    var restoredDate = lastResetSnapshot.date;
+    var restoredLog = lastResetSnapshot.log;
+    await storageSet("log:" + restoredDate, restoredLog);
+    patchDailyTotals(restoredDate, restoredLog);
+    if (restoredDate === viewDate) {
+      setLog(restoredLog);
+    } else {
+      setViewDate(restoredDate);
+    }
+    setLastResetSnapshot(null);
   }
 
   async function handleSaveCustomFood() {
@@ -1159,7 +1235,14 @@ function NutritionTracker() {
     var updated, resultId;
     if (editingFoodId) {
       resultId = editingFoodId;
-      updated = customFoods.map(function (f2) { return f2.id === editingFoodId ? Object.assign({}, f2, vals) : f2; });
+      var existingOverride = customFoods.find(function (f2) { return f2.id === editingFoodId; });
+      if (existingOverride) {
+        updated = customFoods.map(function (f2) { return f2.id === editingFoodId ? Object.assign({}, f2, vals) : f2; });
+      } else {
+        var presetMatch = PRESET_FOODS.find(function (pf) { return pf.id === editingFoodId; });
+        var overrideFood = Object.assign({ id: editingFoodId, group: presetMatch ? presetMatch.group : "Eigene Produkte" }, vals);
+        updated = customFoods.concat([overrideFood]);
+      }
     } else {
       resultId = "c" + uid();
       var food = Object.assign({ id: resultId, group: "Eigene Produkte" }, vals);
@@ -1180,7 +1263,7 @@ function NutritionTracker() {
     var updated = customFoods.filter(function (f) { return f.id !== id; });
     setCustomFoods(updated);
     await storageSet("custom-foods", updated);
-    if (selectedId === id) setSelectedId(PRESET_FOODS[0].id);
+    if (selectedId === id && id.charAt(0) === "c") setSelectedId(PRESET_FOODS[0].id);
   }
 
   async function handleSaveGoal() {
@@ -1273,7 +1356,8 @@ function NutritionTracker() {
         viewDate !== todayStr
           ? h("button", { className: "today-btn", onClick: function () { setViewDate(todayStr); } }, "Zu heute")
           : null,
-        viewDate !== todayStr ? h("span", { className: "viewing-past-badge" }, formatLongDate(viewDate)) : null
+        viewDate !== todayStr ? h("span", { className: "viewing-past-badge" }, formatLongDate(viewDate)) : null,
+        lastResetSnapshot ? h("button", { className: "restore-btn", onClick: handleRestoreDay }, h(RotateCw, { size: 12 }), "Wiederherstellen") : null
       ),
 
       h("div", { className: "card" },
@@ -1342,7 +1426,7 @@ function NutritionTracker() {
         ),
         selectedFood ? h("div", { className: "selected-info mono" },
           h("span", null, selectedFood.name + " · pro 100g: " + selectedFood.kcal + " kcal · P" + selectedFood.protein + " · K" + selectedFood.carbs + " · F" + selectedFood.fat + (selectedFood.portionSize ? (" · 1 Portion = " + selectedFood.portionSize + "g") : "")),
-          selectedFood.group === "Eigene Produkte" ? h("div", { style: { display: "flex", gap: 14 } },
+          h("div", { style: { display: "flex", gap: 14 } },
             h("button", {
               className: "delete-link", style: { color: "#5B8FA3" },
               onClick: function () {
@@ -1366,8 +1450,11 @@ function NutritionTracker() {
                 setShowAddFood(true);
               }
             }, h(Pencil, { size: 12 }), "bearbeiten"),
-            h("button", { className: "delete-link", onClick: function () { handleDeleteCustomFood(selectedFood.id); } }, h(Trash2, { size: 12 }), "löschen")
-          ) : null
+            (selectedFood.id.charAt(0) === "c" || customFoods.some(function (cf) { return cf.id === selectedFood.id; }))
+              ? h("button", { className: "delete-link", onClick: function () { handleDeleteCustomFood(selectedFood.id); } },
+                  h(Trash2, { size: 12 }), selectedFood.id.charAt(0) === "c" ? "löschen" : "Original wiederherstellen")
+              : null
+          )
         ) : null,
         error ? h("div", { className: "error-text" }, error) : null
       ),
