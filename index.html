@@ -50,7 +50,7 @@
   .ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .macro-val { font-size: 14px; font-weight: 600; margin-top: 2px; }
   .macro-goal { font-size: 10px; color: #8A8579; }
-  .macro-label { margin-top: 8px; font-size: 12px; color: #8A8579; }
+  .macro-label { margin-top: 8px; font-size: 14px; font-weight: 600; }
   .macro-remaining { font-size: 11px; text-align: center; }
 
   .add-row { display: flex; flex-direction: column; gap: 12px; }
@@ -94,7 +94,8 @@
   .week-val { font-size: 10px; color: #8A8579; margin-bottom: 8px; height: 12px; overflow: hidden; white-space: nowrap; }
   .week-bar { width: 100%; border-radius: 6px 6px 0 0; transition: height .3s ease; min-height: 0; }
   .week-label { font-size: 11px; margin-top: 8px; padding: 0 4px; border-radius: 8px; white-space: nowrap; overflow: visible; height: 15px; line-height: 15px; box-sizing: border-box; }
-  .week-tick { width: 1px; height: 15px; background: #4A463E; margin-top: 8px; display: inline-block; }
+  .week-tick-wrap { height: 15px; margin-top: 8px; display: flex; align-items: flex-start; justify-content: center; box-sizing: border-box; }
+  .week-tick { width: 1px; height: 5px; background: #4A463E; display: block; }
   .legend { display: flex; align-items: center; gap: 16px; margin-top: 16px; font-size: 10px; color: #8A8579; flex-wrap: wrap; }
   .legend-item { display: flex; align-items: center; gap: 6px; }
   .legend-dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
@@ -829,30 +830,47 @@ function monthLabel(mk) {
   var m = parseInt(parts[1],10)-1;
   return MONTH_SHORT[m] + " " + y;
 }
-function groupWeightData(entries, range) {
+function groupWeightData(entries, range, viewDate) {
   if (!entries.length) return [];
   var sorted = entries.slice().sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
   function toTime(dateStr) { return new Date(dateStr + "T00:00:00").getTime(); }
+
   if (range === "day") {
-    return sorted.slice(-30).map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date) }; });
+    return sorted.slice(-14).map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date) }; });
   }
   if (range === "week") {
-    var wBuckets = {};
-    sorted.forEach(function(e){ var wk = mondayOfWeek(e.date); (wBuckets[wk] = wBuckets[wk] || []).push(e.weight); });
-    var wKeys = Object.keys(wBuckets).sort();
-    return wKeys.slice(-26).map(function(k){ return { x: formatShortDate(k), y: round1(avg(wBuckets[k])), t: toTime(k) }; });
+    // Zeigt die tatsächlich geloggten Tage der Kalenderwoche, in der viewDate liegt (keine Lücken-Punkte).
+    var monday = mondayOfWeek(viewDate);
+    var mondayT = toTime(monday);
+    var weekEntries = sorted.filter(function(e){
+      var diffDays = Math.round((toTime(e.date) - mondayT) / 86400000);
+      return diffDays >= 0 && diffDays < 7;
+    });
+    return weekEntries.map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date) }; });
   }
   if (range === "month") {
-    var mBuckets = {};
-    sorted.forEach(function(e){ var mk = e.date.slice(0,7); (mBuckets[mk] = mBuckets[mk] || []).push(e.weight); });
-    var mKeys = Object.keys(mBuckets).sort();
-    return mKeys.slice(-24).map(function(k){ return { x: monthLabel(k), y: round1(avg(mBuckets[k])), t: toTime(k + "-15") }; });
+    // Zeigt die tatsächlich geloggten Tage des Monats, in dem viewDate liegt.
+    var vd = new Date(viewDate + "T00:00:00");
+    var yy = vd.getFullYear(), mm = vd.getMonth();
+    var monthEntries = sorted.filter(function(e){
+      var ed = new Date(e.date + "T00:00:00");
+      return ed.getFullYear() === yy && ed.getMonth() === mm;
+    });
+    return monthEntries.map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date) }; });
   }
   if (range === "year") {
-    var yBuckets = {};
-    sorted.forEach(function(e){ var yk = e.date.slice(0,4); (yBuckets[yk] = yBuckets[yk] || []).push(e.weight); });
-    var yKeys = Object.keys(yBuckets).sort();
-    return yKeys.map(function(k){ return { x: k, y: round1(avg(yBuckets[k])), t: toTime(k + "-07-01") }; });
+    // Zeigt je einen Durchschnittswert pro Monat des Jahres, in dem viewDate liegt.
+    var vy = new Date(viewDate + "T00:00:00").getFullYear();
+    var yearEntries = sorted.filter(function(e){ return e.date.slice(0,4) === String(vy); });
+    var byMonth = {};
+    yearEntries.forEach(function(e){
+      var mk = e.date.slice(5,7);
+      (byMonth[mk] = byMonth[mk] || []).push(e.weight);
+    });
+    var monthKeys = Object.keys(byMonth).sort();
+    return monthKeys.map(function(mk){
+      return { x: MONTH_SHORT[parseInt(mk,10)-1], y: round1(avg(byMonth[mk])), t: toTime(vy + "-" + mk + "-15") };
+    });
   }
   return sorted.map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date) }; });
 }
@@ -1071,6 +1089,8 @@ function NutritionTracker() {
 
   var detailEntryState = useState(null), detailEntry = detailEntryState[0], setDetailEntry = detailEntryState[1];
   var detailMacroState = useState(null), detailMacro = detailMacroState[0], setDetailMacro = detailMacroState[1];
+  var editEntryGramsState = useState(""), editEntryGrams = editEntryGramsState[0], setEditEntryGrams = editEntryGramsState[1];
+  var entryEditErrorState = useState(""), entryEditError = entryEditErrorState[0], setEntryEditError = entryEditErrorState[1];
 
   useEffect(function () {
     (async function () {
@@ -1285,6 +1305,40 @@ function NutritionTracker() {
   }
   function jumpToDay(dateStr) { setViewDate(dateStr); }
 
+  useEffect(function () {
+    if (detailEntry) {
+      setEditEntryGrams(String(detailEntry.grams));
+      setEntryEditError("");
+    }
+  }, [detailEntry]);
+
+  async function handleUpdateEntryGrams() {
+    if (!detailEntry) return;
+    var newG = parseFloat(editEntryGrams);
+    if (!newG || newG <= 0) { setEntryEditError("Bitte eine gültige Menge angeben."); return; }
+    setEntryEditError("");
+    var per100 = {
+      kcal: detailEntry.kcal / detailEntry.grams * 100,
+      protein: detailEntry.protein / detailEntry.grams * 100,
+      carbs: detailEntry.carbs / detailEntry.grams * 100,
+      fat: detailEntry.fat / detailEntry.grams * 100
+    };
+    var f = newG / 100;
+    var updatedEntry = Object.assign({}, detailEntry, {
+      grams: newG,
+      kcal: Math.round(per100.kcal * f),
+      protein: round1(per100.protein * f),
+      carbs: round1(per100.carbs * f),
+      fat: round1(per100.fat * f)
+    });
+    var newLog = log.map(function (e) { return e.id === detailEntry.id ? updatedEntry : e; });
+    setLog(newLog);
+    await storageSet("log:" + viewDate, newLog);
+    patchDailyTotals(viewDate, newLog);
+    if (lastResetSnapshot && lastResetSnapshot.date === viewDate) setLastResetSnapshot(null);
+    setDetailEntry(null);
+  }
+
   async function handleSaveWeight() {
     var w = parseFloat(weightInput);
     if (!w || w <= 0) { setWeightError("Bitte ein gültiges Gewicht angeben."); return; }
@@ -1301,7 +1355,7 @@ function NutritionTracker() {
     await storageSet("weight-log", updated);
   }
 
-  var chartPoints = useMemo(function () { return groupWeightData(weightLog, weightRange); }, [weightLog, weightRange]);
+  var chartPoints = useMemo(function () { return groupWeightData(weightLog, weightRange, viewDate); }, [weightLog, weightRange, viewDate]);
   var latestWeight = weightLog.length ? weightLog[weightLog.length - 1] : null;
   var weightTrend = useMemo(function () {
     if (!latestWeight) return null;
@@ -1379,7 +1433,7 @@ function NutritionTracker() {
                   h("span", { className: "macro-goal" }, "/ " + Math.round(goal[k]) + meta.unit)
                 )
               ),
-              h("span", { className: "macro-label" }, meta.label),
+              h("span", { className: "macro-label", style: { color: meta.color } }, meta.label),
               h("span", { className: "macro-remaining mono", style: { color: remaining[k] >= 0 ? "#8FBC5A" : "#C97B63" } },
                 (remaining[k] >= 0 ? "noch " : "über ") + Math.abs(round1(remaining[k])) + meta.unit + (pct !== null ? (" · " + pct + "%") : "")
               )
@@ -1501,7 +1555,10 @@ function NutritionTracker() {
           : h("div", { className: "week-bars", style: overviewPoints.length > 16 ? { gap: "3px" } : null },
               (function () {
                 var n = overviewPoints.length;
-                var labelStep = Math.max(1, Math.ceil(n / 8));
+                // Feste Schrittweite von 5 in der Monatsansicht (konstanter Abstand), sonst adaptiv.
+                var labelStep = overviewRange === "month" ? 5 : Math.max(1, Math.ceil(n / 8));
+                var RESERVED_PX = 43; // Platz für Zahl (20px) + Beschriftung/Strich (23px)
+                var BAR_MAX_PX = 144 - RESERVED_PX;
                 return overviewPoints.map(function (p, i) {
                   var barGoal = p.goalForBar || goal.kcal;
                   var pct = barGoal > 0 ? Math.min(p.kcal / barGoal, 1.2) : 0;
@@ -1511,16 +1568,17 @@ function NutritionTracker() {
                   var labelColor = isViewDate ? "#8FBC5A" : (isToday ? "#EDE8DE" : "#8A8579");
                   var labelBg = isViewDate ? "rgba(143,188,90,0.15)" : "transparent";
                   var showLabel = (i % labelStep === 0) || (i === n - 1);
+                  var barHeightPx = Math.max((pct / 1.2) * BAR_MAX_PX, p.kcal > 0 ? 3 : 0);
                   return h("div", { className: "week-col", key: p.key, onClick: function () { jumpToDay(p.jumpDate); }, title: "Zu diesem Tag springen" },
                     h("span", { className: "week-val mono" }, (showLabel && p.kcal > 0) ? Math.round(p.kcal) : ""),
                     h("div", { className: "week-bar", style: {
-                      height: Math.max(pct * 100, p.kcal > 0 ? 3 : 0) + "%",
+                      height: barHeightPx + "px",
                       background: over ? "#C97B63" : "#8FBC5A",
                       opacity: p.kcal > 0 ? 1 : 0.15
                     } }),
                     showLabel
                       ? h("span", { className: "week-label mono", style: { color: labelColor, fontWeight: (isViewDate || isToday) ? 600 : 400, background: labelBg } }, p.label)
-                      : h("span", { className: "week-tick", style: { background: isViewDate ? "#8FBC5A" : "#4A463E" } })
+                      : h("div", { className: "week-tick-wrap" }, h("span", { className: "week-tick", style: { background: isViewDate ? "#8FBC5A" : "#4A463E" } }))
                   );
                 });
               })()
@@ -1638,7 +1696,20 @@ function NutritionTracker() {
           h("span", { className: "modal-title display" }, detailEntry.name),
           h("button", { className: "modal-close", onClick: function () { setDetailEntry(null); } }, h(X, { size: 18 }))
         ),
-        h("div", { className: "mono muted", style: { fontSize: 12, marginBottom: 10 } }, "Menge: " + detailEntry.grams + " g"),
+        h("div", { className: "weight-log-row", style: { marginBottom: 10 } },
+          h("div", null,
+            h("div", { className: "weight-log-label" }, "MENGE"),
+            h("div", { className: "grams-wrap", style: { width: 120 } },
+              h("input", {
+                type: "number", className: "input input-grams mono", value: editEntryGrams,
+                onChange: function (e) { setEditEntryGrams(e.target.value); }
+              }),
+              h("span", { className: "grams-unit mono" }, "g")
+            )
+          ),
+          h("button", { className: "btn-primary", style: { marginTop: 20 }, onClick: handleUpdateEntryGrams }, h(Check, { size: 15 }), "aktualisieren")
+        ),
+        entryEditError ? h("div", { className: "error-text", style: { marginTop: -6, marginBottom: 12 } }, entryEditError) : null,
         h("table", { className: "detail-table" },
           h("thead", null,
             h("tr", null,
