@@ -111,6 +111,14 @@
   .weight-input { width: 120px; }
   .weight-log-label { font-size: 11px; color: #8A8579; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; }
   .range-toggle { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+  .period-nav-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 14px; }
+  .period-nav-label { font-size: 12px; color: #C8C3B5; font-family: 'JetBrains Mono', monospace; min-width: 110px; text-align: center; }
+  .pie-wrap { display: flex; flex-direction: column; align-items: center; padding: 8px 0 4px; }
+  .pie-legend { width: 100%; max-width: 240px; margin-top: 18px; }
+  .pie-legend-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; font-size: 13px; }
+  .pie-legend-name { display: flex; align-items: center; gap: 8px; }
+  .pie-legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .pie-legend-val { color: #8A8579; font-size: 12px; }
   .range-btn { padding: 6px 13px; border-radius: 20px; border: 1px solid #33312C; background: transparent; color: #8A8579; font-size: 12px; cursor: pointer; font-family: 'JetBrains Mono', monospace; }
   .range-btn.active { background: #8FBC5A; border-color: #8FBC5A; color: #1C1B19; font-weight: 600; }
   .chart-wrap { margin: 4px 0 0; }
@@ -774,7 +782,92 @@ var PRESET_FOODS = [
   { id: "p559", name: "Steirischer Kernölsalat", kcal: 130, protein: 2.0, carbs: 6.0, fat: 11.0, group: "Gerichte" },
   { id: "p560", name: "Verhackertes", kcal: 420, protein: 12.0, carbs: 1.0, fat: 40.0, group: "Fette & Süßes" },
   { id: "p561", name: "Kürbiskernöl", kcal: 884, protein: 0.0, carbs: 0.0, fat: 100.0, group: "Fette & Süßes" },
-  { id: "p562", name: "Marillenmarmelade", kcal: 250, protein: 0.3, carbs: 62.0, fat: 0.1, group: "Fette & Süßes" }
+  { id: "p562", name: "Marillenmarmelade", kcal: 250, protein: 0.3, carbs: 62.0, fat: 0.1, group: "Fette & Süßes" },
+  { id: "p563", name: "Shawarma", kcal: 200, protein: 12.0, carbs: 18.0, fat: 9.0, group: "Gerichte" },
+  { id: "p564", name: "Gyros (Schwein)", kcal: 210, protein: 16.0, carbs: 3.0, fat: 15.0, group: "Gerichte" },
+  { id: "p565", name: "Pulled Pork", kcal: 215, protein: 22.0, carbs: 4.0, fat: 12.0, group: "Gerichte" },
+  { id: "p566", name: "Spare Ribs (BBQ)", kcal: 280, protein: 20.0, carbs: 8.0, fat: 19.0, group: "Gerichte" },
+  { id: "p567", name: "Korean Fried Chicken", kcal: 290, protein: 18.0, carbs: 16.0, fat: 17.0, group: "Gerichte" },
+  { id: "p568", name: "Bibimbap", kcal: 145, protein: 7.0, carbs: 20.0, fat: 4.0, group: "Gerichte" },
+  { id: "p569", name: "Nasi Goreng", kcal: 165, protein: 6.0, carbs: 22.0, fat: 5.5, group: "Gerichte" },
+  { id: "p570", name: "Mie Goreng", kcal: 160, protein: 5.0, carbs: 24.0, fat: 5.0, group: "Gerichte" },
+  { id: "p571", name: "Satay (Hähnchen mit Erdnusssauce)", kcal: 210, protein: 15.0, carbs: 8.0, fat: 13.0, group: "Gerichte" },
+  { id: "p572", name: "Rendang", kcal: 220, protein: 16.0, carbs: 5.0, fat: 15.0, group: "Gerichte" },
+  { id: "p573", name: "Char Siu (Schwein)", kcal: 235, protein: 20.0, carbs: 12.0, fat: 11.0, group: "Gerichte" },
+  { id: "p574", name: "Peking Ente", kcal: 290, protein: 18.0, carbs: 6.0, fat: 21.0, group: "Gerichte" },
+  { id: "p575", name: "Dim Sum (gedämpft, Ø)", kcal: 165, protein: 7.0, carbs: 20.0, fat: 6.0, group: "Gerichte" },
+  { id: "p576", name: "Baozi", kcal: 220, protein: 7.0, carbs: 35.0, fat: 5.0, group: "Gerichte" },
+  { id: "p577", name: "Congee (Reisbrei)", kcal: 55, protein: 1.5, carbs: 11.0, fat: 0.5, group: "Gerichte" },
+  { id: "p578", name: "Laksa", kcal: 130, protein: 7.0, carbs: 10.0, fat: 7.0, group: "Gerichte" },
+  { id: "p579", name: "Süßkartoffelpommes", kcal: 190, protein: 2.0, carbs: 28.0, fat: 7.0, group: "Gerichte" },
+  { id: "p580", name: "Erdäpfelknödel", kcal: 175, protein: 4.0, carbs: 32.0, fat: 3.0, group: "Gerichte" },
+  { id: "p581", name: "Semmelknödel", kcal: 165, protein: 5.0, carbs: 26.0, fat: 4.0, group: "Gerichte" },
+  { id: "p582", name: "Faschierte Laibchen", kcal: 220, protein: 17.0, carbs: 8.0, fat: 13.0, group: "Gerichte" },
+  { id: "p583", name: "Millirahmstrudel", kcal: 210, protein: 5.0, carbs: 28.0, fat: 8.0, group: "Gerichte" },
+  { id: "p584", name: "Rahmschnitzel", kcal: 260, protein: 20.0, carbs: 8.0, fat: 16.0, group: "Gerichte" },
+  { id: "p585", name: "Cordon Bleu", kcal: 290, protein: 24.0, carbs: 12.0, fat: 16.0, group: "Gerichte" },
+  { id: "p586", name: "Schokoriegel mit Karamell", kcal: 480, protein: 5.0, carbs: 60.0, fat: 24.0, group: "Fette & Süßes" },
+  { id: "p587", name: "Karamell-Popcorn", kcal: 430, protein: 4.0, carbs: 78.0, fat: 13.0, group: "Fette & Süßes" },
+  { id: "p588", name: "Salzbrezel-Sticks", kcal: 380, protein: 10.0, carbs: 78.0, fat: 3.0, group: "Fette & Süßes" },
+  { id: "p589", name: "Yuca / Maniok (gekocht)", kcal: 160, protein: 1.4, carbs: 38.0, fat: 0.3, group: "Gemüse" },
+  { id: "p590", name: "Süßkartoffelpüree", kcal: 105, protein: 1.8, carbs: 22.0, fat: 1.5, group: "Gemüse" },
+  { id: "p591", name: "Entenbrust (gegart)", kcal: 200, protein: 19.0, carbs: 0.0, fat: 13.0, group: "Fleisch & Fisch" },
+  { id: "p592", name: "Kaninchen (gegart)", kcal: 173, protein: 29.0, carbs: 0.0, fat: 6.0, group: "Fleisch & Fisch" },
+  { id: "p593", name: "Wildschwein (gegart)", kcal: 160, protein: 28.0, carbs: 0.0, fat: 5.0, group: "Fleisch & Fisch" },
+  { id: "p594", name: "Provolone", kcal: 351, protein: 26.0, carbs: 2.0, fat: 27.0, group: "Eier & Milch" },
+  { id: "p595", name: "Frischkäse-Aufstrich (herzhaft)", kcal: 265, protein: 6.0, carbs: 4.0, fat: 25.0, group: "Eier & Milch" },
+  { id: "p596", name: "Remoulade", kcal: 430, protein: 1.0, carbs: 6.0, fat: 45.0, group: "Fette & Süßes" },
+  { id: "p597", name: "Cocktailsauce", kcal: 320, protein: 1.0, carbs: 15.0, fat: 28.0, group: "Fette & Süßes" },
+  { id: "p598", name: "Currysauce", kcal: 95, protein: 1.5, carbs: 12.0, fat: 4.5, group: "Fette & Süßes" },
+  { id: "p599", name: "Hafermilch, Barista", kcal: 60, protein: 0.8, carbs: 8.0, fat: 2.5, group: "Getränke" },
+  { id: "p600", name: "Skyr-Drink", kcal: 55, protein: 8.0, carbs: 5.0, fat: 0.2, group: "Getränke" },
+  { id: "p601", name: "Isoprotein Pulver", kcal: 370, protein: 88.0, carbs: 2.0, fat: 1.0, group: "Fitness & Sport" },
+  { id: "p602", name: "Reisdrink Vanille", kcal: 55, protein: 0.1, carbs: 11.0, fat: 1.2, group: "Getränke" },
+  { id: "p603", name: "Kichererbsen-Curry (Chana Masala)", kcal: 130, protein: 6.0, carbs: 16.0, fat: 5.0, group: "Gerichte" },
+  { id: "p604", name: "Falafel-Wrap", kcal: 230, protein: 8.0, carbs: 28.0, fat: 9.0, group: "Gerichte" },
+  { id: "p605", name: "Veggie Burger (pflanzlich)", kcal: 195, protein: 14.0, carbs: 15.0, fat: 9.0, group: "Gerichte" },
+  { id: "p606", name: "Tofu-Pfanne mit Gemüse", kcal: 105, protein: 8.0, carbs: 6.0, fat: 6.0, group: "Gerichte" },
+  { id: "p607", name: "Seitan-Geschnetzeltes", kcal: 130, protein: 20.0, carbs: 6.0, fat: 3.0, group: "Gerichte" },
+  { id: "p608", name: "Vollkorn-Toastbrot", kcal: 235, protein: 10.0, carbs: 40.0, fat: 3.5, group: "Getreide" },
+  { id: "p609", name: "Roggenvollkornbrot", kcal: 197, protein: 6.5, carbs: 38.0, fat: 1.0, group: "Getreide" },
+  { id: "p610", name: "Haferkekse", kcal: 440, protein: 7.0, carbs: 65.0, fat: 17.0, group: "Getreide" },
+  { id: "p611", name: "Amarant-Riegel", kcal: 400, protein: 9.0, carbs: 60.0, fat: 14.0, group: "Getreide" },
+  { id: "p612", name: "Grünkohlchips", kcal: 350, protein: 15.0, carbs: 35.0, fat: 18.0, group: "Gemüse" },
+  { id: "p613", name: "Rote Linsen, roh", kcal: 336, protein: 24.0, carbs: 52.0, fat: 1.5, group: "Hülsenfrüchte" },
+  { id: "p614", name: "Grüne Linsen (gekocht)", kcal: 105, protein: 8.0, carbs: 17.0, fat: 0.4, group: "Hülsenfrüchte" },
+  { id: "p615", name: "Belugalinsen (gekocht)", kcal: 110, protein: 8.5, carbs: 18.0, fat: 0.4, group: "Hülsenfrüchte" },
+  { id: "p616", name: "Kichererbsen, roh", kcal: 364, protein: 19.0, carbs: 61.0, fat: 6.0, group: "Hülsenfrüchte" },
+  { id: "p617", name: "Granatapfelkerne", kcal: 83, protein: 1.7, carbs: 19.0, fat: 1.2, group: "Obst" },
+  { id: "p618", name: "Honigmelone", kcal: 36, protein: 0.8, carbs: 8.3, fat: 0.2, group: "Obst" },
+  { id: "p619", name: "Rhabarber (gedünstet)", kcal: 21, protein: 0.9, carbs: 4.5, fat: 0.2, group: "Obst" },
+  { id: "p620", name: "Zuckermelone (Cantaloupe)", kcal: 34, protein: 0.8, carbs: 8.2, fat: 0.2, group: "Obst" },
+  { id: "p621", name: "Lammkoteletts (gegart)", kcal: 280, protein: 25.0, carbs: 0.0, fat: 20.0, group: "Fleisch & Fisch" },
+  { id: "p622", name: "Schweinegulasch", kcal: 155, protein: 14.0, carbs: 5.0, fat: 9.0, group: "Fleisch & Fisch" },
+  { id: "p623", name: "Rinderfilet, roh", kcal: 133, protein: 21.0, carbs: 0.0, fat: 5.0, group: "Fleisch & Fisch" },
+  { id: "p624", name: "Hähnchenbrust, roh", kcal: 110, protein: 23.0, carbs: 0.0, fat: 1.6, group: "Fleisch & Fisch" },
+  { id: "p625", name: "Lachs, roh", kcal: 182, protein: 20.0, carbs: 0.0, fat: 11.0, group: "Fleisch & Fisch" },
+  { id: "p626", name: "Emmentaler, light", kcal: 280, protein: 30.0, carbs: 1.0, fat: 18.0, group: "Eier & Milch" },
+  { id: "p627", name: "Hüttenkäse, körnig (mager)", kcal: 80, protein: 12.0, carbs: 3.0, fat: 1.8, group: "Eier & Milch" },
+  { id: "p628", name: "Sojajoghurt (ungesüßt)", kcal: 55, protein: 4.0, carbs: 2.5, fat: 3.0, group: "Eier & Milch" },
+  { id: "p629", name: "Kokosjoghurt", kcal: 130, protein: 1.5, carbs: 8.0, fat: 10.0, group: "Eier & Milch" },
+  { id: "p630", name: "Pancetta", kcal: 393, protein: 27.0, carbs: 0.5, fat: 32.0, group: "Fleisch & Fisch" },
+  { id: "p631", name: "Balsamico-Dressing", kcal: 145, protein: 0.5, carbs: 17.0, fat: 8.0, group: "Fette & Süßes" },
+  { id: "p632", name: "Pesto (Basilikum)", kcal: 460, protein: 5.0, carbs: 5.0, fat: 47.0, group: "Fette & Süßes" },
+  { id: "p633", name: "Sriracha", kcal: 90, protein: 2.0, carbs: 19.0, fat: 0.5, group: "Fette & Süßes" },
+  { id: "p634", name: "Tahini (Sesampaste)", kcal: 595, protein: 17.0, carbs: 21.0, fat: 54.0, group: "Fette & Süßes" },
+  { id: "p635", name: "Frozen Yogurt", kcal: 160, protein: 4.0, carbs: 27.0, fat: 4.0, group: "Fette & Süßes" },
+  { id: "p636", name: "Sorbet (Frucht)", kcal: 130, protein: 0.2, carbs: 32.0, fat: 0.1, group: "Fette & Süßes" },
+  { id: "p637", name: "Cold Brew Kaffee", kcal: 3, protein: 0.2, carbs: 0.5, fat: 0.0, group: "Getränke" },
+  { id: "p638", name: "Ingwer-Shot", kcal: 25, protein: 0.2, carbs: 6.0, fat: 0.0, group: "Getränke" },
+  { id: "p639", name: "Elektrolyt-Getränk (isotonisch)", kcal: 24, protein: 0.0, carbs: 6.0, fat: 0.0, group: "Getränke" },
+  { id: "p640", name: "Buttermilch-Drink, Frucht", kcal: 55, protein: 2.8, carbs: 9.0, fat: 0.8, group: "Getränke" },
+  { id: "p641", name: "Overnight Chia Pudding", kcal: 130, protein: 4.5, carbs: 12.0, fat: 7.0, group: "Backwaren & Süßgebäck" },
+  { id: "p642", name: "Energiekugeln (Dattel-Nuss)", kcal: 420, protein: 8.0, carbs: 45.0, fat: 22.0, group: "Backwaren & Süßgebäck" },
+  { id: "p643", name: "Scones", kcal: 370, protein: 7.0, carbs: 48.0, fat: 16.0, group: "Backwaren & Süßgebäck" },
+  { id: "p644", name: "Zoodles (Zucchininudeln) mit Sauce", kcal: 55, protein: 2.0, carbs: 6.0, fat: 2.5, group: "Gerichte" },
+  { id: "p645", name: "Buddha Bowl (Gemüse & Quinoa)", kcal: 110, protein: 4.5, carbs: 15.0, fat: 4.0, group: "Gerichte" },
+  { id: "p646", name: "Linguine alle Vongole", kcal: 155, protein: 8.0, carbs: 24.0, fat: 3.0, group: "Gerichte" },
+  { id: "p647", name: "Involtini (Rind, gefüllt)", kcal: 200, protein: 19.0, carbs: 4.0, fat: 12.0, group: "Gerichte" }
 ];
 
 var DEFAULT_GOAL = { kcal: 2200, protein: 140, carbs: 250, fat: 70 };
@@ -789,6 +882,41 @@ function addDays(dateStr, n) {
   var d = new Date(dateStr + "T00:00:00");
   d.setDate(d.getDate() + n);
   return dateKeyFromDate(d);
+}
+function addMonths(dateStr, n) {
+  var d = new Date(dateStr + "T00:00:00");
+  var day = d.getDate();
+  d.setDate(1);
+  d.setMonth(d.getMonth() + n);
+  var daysInNewMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+  d.setDate(Math.min(day, daysInNewMonth));
+  return dateKeyFromDate(d);
+}
+function addYears(dateStr, n) {
+  var d = new Date(dateStr + "T00:00:00");
+  d.setFullYear(d.getFullYear() + n);
+  return dateKeyFromDate(d);
+}
+function shiftByRange(dateStr, range, dir) {
+  if (range === "day") return addDays(dateStr, dir);
+  if (range === "week") return addDays(dateStr, dir * 7);
+  if (range === "month") return addMonths(dateStr, dir);
+  if (range === "year") return addYears(dateStr, dir);
+  return dateStr;
+}
+function formatPeriodLabel(dateStr, range) {
+  var monthNamesFull = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+  if (range === "day") return formatShortDate(dateStr);
+  if (range === "week") {
+    var mon = mondayOfWeek(dateStr);
+    return formatShortDate(mon) + "–" + formatShortDate(addDays(mon, 6));
+  }
+  if (range === "month") {
+    var d = new Date(dateStr + "T00:00:00");
+    return monthNamesFull[d.getMonth()] + " " + d.getFullYear();
+  }
+  if (range === "year") return String(new Date(dateStr + "T00:00:00").getFullYear());
+  return "";
 }
 function weekdayLabel(d) { return WEEKDAY_LABELS[d.getDay()]; }
 function formatShortDate(dateStr) {
@@ -836,7 +964,7 @@ function groupWeightData(entries, range, viewDate) {
   function toTime(dateStr) { return new Date(dateStr + "T00:00:00").getTime(); }
 
   if (range === "day") {
-    return sorted.slice(-14).map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date) }; });
+    return sorted.slice(-14).map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date), date: e.date }; });
   }
   if (range === "week") {
     // Zeigt die tatsächlich geloggten Tage der Kalenderwoche, in der viewDate liegt (keine Lücken-Punkte).
@@ -846,7 +974,7 @@ function groupWeightData(entries, range, viewDate) {
       var diffDays = Math.round((toTime(e.date) - mondayT) / 86400000);
       return diffDays >= 0 && diffDays < 7;
     });
-    return weekEntries.map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date) }; });
+    return weekEntries.map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date), date: e.date }; });
   }
   if (range === "month") {
     // Zeigt die tatsächlich geloggten Tage des Monats, in dem viewDate liegt.
@@ -856,7 +984,7 @@ function groupWeightData(entries, range, viewDate) {
       var ed = new Date(e.date + "T00:00:00");
       return ed.getFullYear() === yy && ed.getMonth() === mm;
     });
-    return monthEntries.map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date) }; });
+    return monthEntries.map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date), date: e.date }; });
   }
   if (range === "year") {
     // Zeigt je einen Durchschnittswert pro Monat des Jahres, in dem viewDate liegt.
@@ -865,14 +993,16 @@ function groupWeightData(entries, range, viewDate) {
     var byMonth = {};
     yearEntries.forEach(function(e){
       var mk = e.date.slice(5,7);
-      (byMonth[mk] = byMonth[mk] || []).push(e.weight);
+      if (!byMonth[mk]) byMonth[mk] = { weights: [], last: e.date };
+      byMonth[mk].weights.push(e.weight);
+      if (e.date > byMonth[mk].last) byMonth[mk].last = e.date;
     });
     var monthKeys = Object.keys(byMonth).sort();
     return monthKeys.map(function(mk){
-      return { x: MONTH_SHORT[parseInt(mk,10)-1], y: round1(avg(byMonth[mk])), t: toTime(vy + "-" + mk + "-15") };
+      return { x: MONTH_SHORT[parseInt(mk,10)-1], y: round1(avg(byMonth[mk].weights)), t: toTime(vy + "-" + mk + "-15"), date: byMonth[mk].last };
     });
   }
-  return sorted.map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date) }; });
+  return sorted.map(function(e){ return { x: formatShortDate(e.date), y: e.weight, t: toTime(e.date), date: e.date }; });
 }
 function groupDailyTotals(entries, range, viewDate, goalKcal) {
   var sorted = entries.slice().sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
@@ -981,11 +1111,35 @@ function Ring(props) {
   );
 }
 
+function PieChart(props) {
+  var slices = props.slices || [];
+  var size = props.size || 160;
+  var total = slices.reduce(function (s, x) { return s + x.value; }, 0);
+  if (total <= 0) return null;
+  var cx = size / 2, cy = size / 2, r = size / 2 - 4;
+  var startAngle = -90;
+  var paths = [];
+  slices.forEach(function (s, i) {
+    var angle = (s.value / total) * 360;
+    if (angle <= 0.001) return;
+    var endAngle = startAngle + angle;
+    var largeArc = angle > 180 ? 1 : 0;
+    var startRad = startAngle * Math.PI / 180, endRad = endAngle * Math.PI / 180;
+    var x1 = cx + r * Math.cos(startRad), y1 = cy + r * Math.sin(startRad);
+    var x2 = cx + r * Math.cos(endRad), y2 = cy + r * Math.sin(endRad);
+    var d = "M" + cx + "," + cy + " L" + x1.toFixed(2) + "," + y1.toFixed(2) + " A" + r + "," + r + " 0 " + largeArc + " 1 " + x2.toFixed(2) + "," + y2.toFixed(2) + " Z";
+    paths.push(h("path", { key: i, d: d, fill: s.color }));
+    startAngle = endAngle;
+  });
+  return h("svg", { width: size, height: size, viewBox: "0 0 " + size + " " + size }, paths);
+}
+
 function LineChart(props) {
   var points = props.points || [];
   var color = props.color || "#5B8FA3";
   var height = props.height || 160;
   var unit = props.unit || "";
+  var onPointClick = props.onPointClick;
 
   var selState = useState(points.length ? points.length - 1 : null);
   var selIndex = selState[0], setSelIndex = selState[1];
@@ -994,6 +1148,12 @@ function LineChart(props) {
 
   if (points.length === 0) {
     return h("div", { className: "chart-empty" }, "Noch keine Daten für diesen Zeitraum.");
+  }
+  if (points.length === 1) {
+    return h("div", { className: "chart-empty" },
+      "Bisher nur 1 Messung in diesem Zeitraum: " + points[0].x + " · " + points[0].y + (unit ? (" " + unit) : "") + ".",
+      h("div", { style: { marginTop: 6, fontSize: 11 } }, "Sobald mehr Messungen vorliegen, erscheint hier ein Verlauf.")
+    );
   }
 
   var W = 300, H = height;
@@ -1048,7 +1208,7 @@ function LineChart(props) {
         return h("circle", { key: "c" + i, cx: xPos(i), cy: yPos(p.y), r: isSel ? 5 : 2.5, fill: isSel ? "#242220" : color, stroke: isSel ? color : "none", strokeWidth: isSel ? 2 : 0 });
       }),
       points.map(function (p, i) {
-        return h("circle", { key: "tap" + i, cx: xPos(i), cy: yPos(p.y), r: 12, fill: "transparent", style: { cursor: "pointer" }, onClick: function () { setSelIndex(i); } });
+        return h("circle", { key: "tap" + i, cx: xPos(i), cy: yPos(p.y), r: 12, fill: "transparent", style: { cursor: "pointer" }, onClick: function () { setSelIndex(i); if (onPointClick) onPointClick(p); } });
       }),
       points.map(function (p, i) {
         if (i % labelStep !== 0 && i !== n - 1) return null;
@@ -1305,6 +1465,19 @@ function NutritionTracker() {
   }
   function jumpToDay(dateStr) { setViewDate(dateStr); }
 
+  function goOverviewPeriod(dir) {
+    setViewDate(function (v) {
+      var shifted = shiftByRange(v, overviewRange, dir);
+      return shifted > todayStr ? todayStr : shifted;
+    });
+  }
+  function goWeightPeriod(dir) {
+    setViewDate(function (v) {
+      var shifted = shiftByRange(v, weightRange, dir);
+      return shifted > todayStr ? todayStr : shifted;
+    });
+  }
+
   useEffect(function () {
     if (detailEntry) {
       setEditEntryGrams(String(detailEntry.grams));
@@ -1353,6 +1526,13 @@ function NutritionTracker() {
     updated.sort(function (a, b) { return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
     setWeightLog(updated);
     await storageSet("weight-log", updated);
+  }
+
+  async function handleDeleteWeight() {
+    var updated = weightLog.filter(function (e) { return e.date !== viewDate; });
+    setWeightLog(updated);
+    await storageSet("weight-log", updated);
+    setWeightInput("");
   }
 
   var chartPoints = useMemo(function () { return groupWeightData(weightLog, weightRange, viewDate); }, [weightLog, weightRange, viewDate]);
@@ -1434,7 +1614,7 @@ function NutritionTracker() {
                 )
               ),
               h("span", { className: "macro-label", style: { color: meta.color } }, meta.label),
-              h("span", { className: "macro-remaining mono", style: { color: remaining[k] >= 0 ? "#8FBC5A" : "#C97B63" } },
+              h("span", { className: "macro-remaining mono", style: { color: remaining[k] >= 0 ? "#8B93A8" : "#B87A94" } },
                 (remaining[k] >= 0 ? "noch " : "über ") + Math.abs(round1(remaining[k])) + meta.unit + (pct !== null ? (" · " + pct + "%") : "")
               )
             );
@@ -1536,6 +1716,9 @@ function NutritionTracker() {
         h("div", { className: "card-row" },
           h("span", { className: "section-label mono" }, "KALORIENVERLAUF"),
           h("span", { className: "mono muted", style: { fontSize: 12 } }, (function () {
+            if (overviewRange === "day") {
+              return totals.kcal > 0 ? (Math.round(totals.kcal) + " kcal") : "noch keine Daten";
+            }
             var active = overviewPoints.filter(function (p) { return p.kcal > 0; });
             if (active.length === 0) return "noch keine Daten";
             var a = avg(active.map(function (p) { return p.kcal; }));
@@ -1550,7 +1733,44 @@ function NutritionTracker() {
             }, r.label);
           })
         ),
-        overviewPoints.length === 0
+        overviewRange !== "max" ? h("div", { className: "period-nav-row" },
+          h("button", { className: "day-nav-btn", onClick: function () { goOverviewPeriod(-1); }, title: "Vorheriger Zeitraum" }, h(ChevronLeft, { size: 15 })),
+          h("span", { className: "period-nav-label" }, formatPeriodLabel(viewDate, overviewRange)),
+          h("button", {
+            className: "day-nav-btn", onClick: function () { goOverviewPeriod(1); }, title: "Nächster Zeitraum",
+            disabled: shiftByRange(viewDate, overviewRange, 1) > todayStr
+          }, h(ChevronRight, { size: 15 }))
+        ) : null,
+        overviewRange === "day"
+          ? (function () {
+              var pKcal = totals.protein * 4, cKcal = totals.carbs * 4, fKcal = totals.fat * 9;
+              var sum = pKcal + cKcal + fKcal;
+              if (sum <= 0) return h("div", { className: "log-empty" }, "Noch keine Einträge für diesen Tag.");
+              return h("div", { className: "pie-wrap" },
+                h(PieChart, {
+                  size: 170,
+                  slices: [
+                    { value: pKcal, color: MACRO_META.protein.color },
+                    { value: cKcal, color: MACRO_META.carbs.color },
+                    { value: fKcal, color: MACRO_META.fat.color }
+                  ]
+                }),
+                h("div", { className: "pie-legend" },
+                  ["protein", "carbs", "fat"].map(function (k) {
+                    var kcalForMacro = k === "fat" ? totals.fat * 9 : totals[k] * 4;
+                    var pct = sum > 0 ? Math.round(kcalForMacro / sum * 100) : 0;
+                    return h("div", { className: "pie-legend-row", key: k },
+                      h("span", { className: "pie-legend-name" },
+                        h("span", { className: "pie-legend-dot", style: { background: MACRO_META[k].color } }),
+                        MACRO_META[k].label
+                      ),
+                      h("span", { className: "pie-legend-val mono" }, round1(totals[k]) + MACRO_META[k].unit + " · " + pct + "%")
+                    );
+                  })
+                )
+              );
+            })()
+          : overviewPoints.length === 0
           ? h("div", { className: "log-empty" }, "Noch keine Daten vorhanden.")
           : h("div", { className: "week-bars", style: overviewPoints.length > 16 ? { gap: "3px" } : null },
               (function () {
@@ -1583,10 +1803,10 @@ function NutritionTracker() {
                 });
               })()
             ),
-        h("div", { className: "legend" },
+        overviewRange !== "day" ? h("div", { className: "legend" },
           h("span", { className: "legend-item" }, h("span", { className: "legend-dot", style: { background: "#8FBC5A" } }), "im Ziel"),
           h("span", { className: "legend-item" }, h("span", { className: "legend-dot", style: { background: "#C97B63" } }), "über Tagesziel")
-        )
+        ) : null
       ),
 
       h("div", { className: "card", style: { marginTop: 24, marginBottom: 0 } },
@@ -1609,7 +1829,10 @@ function NutritionTracker() {
               value: weightInput, onChange: function (e) { setWeightInput(e.target.value); }
             })
           ),
-          h("button", { className: "btn-primary", style: { marginTop: 20 }, onClick: handleSaveWeight }, h(Check, { size: 15 }), "speichern")
+          h("button", { className: "btn-primary", style: { marginTop: 20 }, onClick: handleSaveWeight }, h(Check, { size: 15 }), "speichern"),
+          weightLog.some(function (e) { return e.date === viewDate; })
+            ? h("button", { className: "icon-btn", style: { marginTop: 20 }, title: "Gewicht dieses Tages löschen", onClick: handleDeleteWeight }, h(Trash2, { size: 15 }))
+            : null
         ),
         weightError ? h("div", { className: "error-text", style: { marginTop: -12, marginBottom: 12 } }, weightError) : null,
         h("div", { className: "range-toggle" },
@@ -1620,7 +1843,15 @@ function NutritionTracker() {
             }, r.label);
           })
         ),
-        h(LineChart, { points: chartPoints, color: "#5B8FA3", unit: "kg" }),
+        weightRange !== "max" ? h("div", { className: "period-nav-row" },
+          h("button", { className: "day-nav-btn", onClick: function () { goWeightPeriod(-1); }, title: "Vorheriger Zeitraum" }, h(ChevronLeft, { size: 15 })),
+          h("span", { className: "period-nav-label" }, formatPeriodLabel(viewDate, weightRange)),
+          h("button", {
+            className: "day-nav-btn", onClick: function () { goWeightPeriod(1); }, title: "Nächster Zeitraum",
+            disabled: shiftByRange(viewDate, weightRange, 1) > todayStr
+          }, h(ChevronRight, { size: 15 }))
+        ) : null,
+        h(LineChart, { points: chartPoints, color: "#5B8FA3", unit: "kg", onPointClick: function (p) { if (p.date) setViewDate(p.date); } }),
         chartPoints.length ? h("div", { className: "weight-range-stats" },
           h("span", null, "Min " + rangeMin + " kg"),
           h("span", null, "Max " + rangeMax + " kg")
