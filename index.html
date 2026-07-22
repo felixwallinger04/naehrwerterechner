@@ -119,6 +119,16 @@
   .pie-legend-name { display: flex; align-items: center; gap: 8px; }
   .pie-legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
   .pie-legend-val { color: #8A8579; font-size: 12px; }
+  .water-ring-wrap { display: flex; flex-direction: column; align-items: center; padding: 8px 0 4px; }
+  .water-ring-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .water-ring-val { font-size: 26px; font-weight: 700; font-family: 'Space Grotesk', sans-serif; margin-top: 2px; }
+  .water-ring-goal { font-size: 12px; color: #8A8579; }
+  .water-presets { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 18px 0 14px; }
+  .water-preset-btn { padding: 8px 16px; border-radius: 20px; border: 1px solid #33312C; background: #2C2A26; color: #C8C3B5; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'JetBrains Mono', monospace; }
+  .water-preset-btn:hover { border-color: #4FA8D8; color: #EDE8DE; }
+  .water-custom-row { display: flex; gap: 10px; margin-bottom: 6px; }
+  .water-log-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-top: 1px solid #33312C; }
+  .water-log-item:first-child { border-top: none; }
   .range-btn { padding: 6px 13px; border-radius: 20px; border: 1px solid #33312C; background: transparent; color: #8A8579; font-size: 12px; cursor: pointer; font-family: 'JetBrains Mono', monospace; }
   .range-btn.active { background: #8FBC5A; border-color: #8FBC5A; color: #1C1B19; font-weight: 600; }
   .chart-wrap { margin: 4px 0 0; }
@@ -188,7 +198,7 @@
 <script>
 "use strict";
 var h = React.createElement;
-var useState = React.useState, useEffect = React.useEffect, useMemo = React.useMemo;
+var useState = React.useState, useEffect = React.useEffect, useMemo = React.useMemo, useRef = React.useRef, useLayoutEffect = React.useLayoutEffect;
 
 // ---------- Icons ----------
 function Icon(props) {
@@ -867,7 +877,47 @@ var PRESET_FOODS = [
   { id: "p644", name: "Zoodles (Zucchininudeln) mit Sauce", kcal: 55, protein: 2.0, carbs: 6.0, fat: 2.5, group: "Gerichte" },
   { id: "p645", name: "Buddha Bowl (Gemüse & Quinoa)", kcal: 110, protein: 4.5, carbs: 15.0, fat: 4.0, group: "Gerichte" },
   { id: "p646", name: "Linguine alle Vongole", kcal: 155, protein: 8.0, carbs: 24.0, fat: 3.0, group: "Gerichte" },
-  { id: "p647", name: "Involtini (Rind, gefüllt)", kcal: 200, protein: 19.0, carbs: 4.0, fat: 12.0, group: "Gerichte" }
+  { id: "p647", name: "Involtini (Rind, gefüllt)", kcal: 200, protein: 19.0, carbs: 4.0, fat: 12.0, group: "Gerichte" },
+  { id: "p648", name: "Paradeiser", kcal: 18, protein: 0.9, carbs: 3.9, fat: 0.2, group: "Gemüse" },
+  { id: "p649", name: "Erdäpfel (roh)", kcal: 77, protein: 2.0, carbs: 17.5, fat: 0.1, group: "Gemüse" },
+  { id: "p650", name: "Karfiol", kcal: 25, protein: 1.9, carbs: 5.0, fat: 0.3, group: "Gemüse" },
+  { id: "p651", name: "Fisolen", kcal: 31, protein: 1.8, carbs: 7.0, fat: 0.1, group: "Gemüse" },
+  { id: "p652", name: "Vogerlsalat", kcal: 21, protein: 2.0, carbs: 2.0, fat: 0.4, group: "Gemüse" },
+  { id: "p653", name: "Marille (frisch)", kcal: 48, protein: 1.4, carbs: 11.0, fat: 0.4, group: "Obst" },
+  { id: "p654", name: "Ribisel (rot)", kcal: 56, protein: 1.4, carbs: 13.1, fat: 0.2, group: "Obst" },
+  { id: "p655", name: "Weichsel (Sauerkirsche)", kcal: 50, protein: 0.9, carbs: 12.0, fat: 0.3, group: "Obst" },
+  { id: "p656", name: "Faschiertes, gemischt (roh)", kcal: 220, protein: 17.0, carbs: 0.0, fat: 17.0, group: "Fleisch & Fisch" },
+  { id: "p657", name: "Topfen, mager", kcal: 67, protein: 12.0, carbs: 4.0, fat: 0.3, group: "Eier & Milch" },
+  { id: "p658", name: "Frankfurter Würstel", kcal: 250, protein: 11.0, carbs: 2.0, fat: 22.0, group: "Fleisch & Fisch" },
+  { id: "p659", name: "Prager Schinken", kcal: 105, protein: 20.0, carbs: 1.0, fat: 2.5, group: "Fleisch & Fisch" },
+  { id: "p660", name: "Kochschinken", kcal: 100, protein: 18.0, carbs: 1.0, fat: 3.0, group: "Fleisch & Fisch" },
+  { id: "p661", name: "Almkäse", kcal: 340, protein: 25.0, carbs: 0.0, fat: 27.0, group: "Eier & Milch" },
+  { id: "p662", name: "Butterkäse", kcal: 335, protein: 22.0, carbs: 0.0, fat: 27.0, group: "Eier & Milch" },
+  { id: "p663", name: "Toastkäse (Scheibletten)", kcal: 280, protein: 15.0, carbs: 6.0, fat: 22.0, group: "Eier & Milch" },
+  { id: "p664", name: "Fruchtjoghurt (Ø)", kcal: 105, protein: 3.8, carbs: 16.0, fat: 2.8, group: "Eier & Milch" },
+  { id: "p665", name: "Kakaopulver", kcal: 375, protein: 20.0, carbs: 40.0, fat: 12.0, group: "Fette & Süßes" },
+  { id: "p666", name: "Müsliriegel (gesüßt)", kcal: 410, protein: 6.0, carbs: 65.0, fat: 14.0, group: "Fette & Süßes" },
+  { id: "p667", name: "Frühstücksspeck", kcal: 480, protein: 30.0, carbs: 1.0, fat: 40.0, group: "Fleisch & Fisch" },
+  { id: "p668", name: "Knoblauchbrot", kcal: 320, protein: 8.0, carbs: 38.0, fat: 15.0, group: "Getreide" },
+  { id: "p669", name: "Fertigmüsli mit Schokolade", kcal: 390, protein: 7.0, carbs: 75.0, fat: 6.5, group: "Getreide" },
+  { id: "p670", name: "Erdäpfelpuffer", kcal: 175, protein: 3.0, carbs: 22.0, fat: 8.0, group: "Gerichte" },
+  { id: "p671", name: "Tiefkühlpizza (Ø)", kcal: 245, protein: 10.0, carbs: 28.0, fat: 10.5, group: "Gerichte" },
+  { id: "p672", name: "Fischstäbchen", kcal: 195, protein: 12.0, carbs: 16.0, fat: 10.0, group: "Gerichte" },
+  { id: "p673", name: "Germteig (roh)", kcal: 260, protein: 8.0, carbs: 50.0, fat: 3.5, group: "Getreide" },
+  { id: "p674", name: "Strudelteig", kcal: 290, protein: 8.0, carbs: 58.0, fat: 2.5, group: "Getreide" },
+  { id: "p675", name: "Kartoffelchips, Paprika", kcal: 535, protein: 6.0, carbs: 52.0, fat: 34.0, group: "Fette & Süßes" },
+  { id: "p676", name: "Cornflakes mit Honig", kcal: 385, protein: 6.0, carbs: 84.0, fat: 2.5, group: "Getreide" },
+  { id: "p677", name: "Sauce Hollandaise", kcal: 400, protein: 2.0, carbs: 4.0, fat: 42.0, group: "Fette & Süßes" },
+  { id: "p678", name: "Bratensauce (Instant)", kcal: 65, protein: 2.0, carbs: 10.0, fat: 2.0, group: "Fette & Süßes" },
+  { id: "p679", name: "Semmel", kcal: 275, protein: 8.5, carbs: 52.0, fat: 2.0, group: "Getreide" },
+  { id: "p680", name: "Vollkornsemmel", kcal: 250, protein: 9.5, carbs: 45.0, fat: 3.0, group: "Getreide" },
+  { id: "p681", name: "Kaisersemmel", kcal: 275, protein: 8.5, carbs: 52.0, fat: 2.0, group: "Getreide" },
+  { id: "p682", name: "Sacherwürfel", kcal: 380, protein: 4.0, carbs: 55.0, fat: 16.0, group: "Backwaren & Süßgebäck" },
+  { id: "p683", name: "Pflanzenfett (fest)", kcal: 900, protein: 0.0, carbs: 0.0, fat: 100.0, group: "Fette & Süßes" },
+  { id: "p684", name: "Grießpudding", kcal: 105, protein: 3.5, carbs: 16.0, fat: 3.0, group: "Backwaren & Süßgebäck" },
+  { id: "p685", name: "Vanillepudding", kcal: 110, protein: 3.0, carbs: 18.0, fat: 3.0, group: "Backwaren & Süßgebäck" },
+  { id: "p686", name: "Schokopudding", kcal: 120, protein: 3.2, carbs: 20.0, fat: 3.5, group: "Backwaren & Süßgebäck" },
+  { id: "p687", name: "Kinderjoghurt", kcal: 115, protein: 4.0, carbs: 15.0, fat: 4.0, group: "Eier & Milch" }
 ];
 
 var DEFAULT_GOAL = { kcal: 2200, protein: 140, carbs: 250, fat: 70 };
@@ -1094,6 +1144,8 @@ var RANGE_OPTIONS = [
   { key: "year", label: "Jahr" },
   { key: "max", label: "Max" }
 ];
+var WATER_PRESETS_ML = [250, 500, 750, 1000];
+var WATER_COLOR = "#4FA8D8";
 
 function Ring(props) {
   var value = props.value, goal = props.goal, color = props.color;
@@ -1244,8 +1296,30 @@ function NutritionTracker() {
   var weightErrorState = useState(""), weightError = weightErrorState[0], setWeightError = weightErrorState[1];
   var weightRangeState = useState("week"), weightRange = weightRangeState[0], setWeightRange = weightRangeState[1];
 
+  var waterLogState = useState([]), waterLog = waterLogState[0], setWaterLog = waterLogState[1];
+  var waterGoalState = useState(2500), waterGoal = waterGoalState[0], setWaterGoal = waterGoalState[1];
+  var customWaterState = useState(""), customWaterAmount = customWaterState[0], setCustomWaterAmount = customWaterState[1];
+  var waterErrorState = useState(""), waterError = waterErrorState[0], setWaterError = waterErrorState[1];
+  var showWaterGoalEditState = useState(false), showWaterGoalEdit = showWaterGoalEditState[0], setShowWaterGoalEdit = showWaterGoalEditState[1];
+  var waterGoalDraftState = useState("2.5"), waterGoalDraft = waterGoalDraftState[0], setWaterGoalDraft = waterGoalDraftState[1];
+
   var dailyTotalsState = useState([]), dailyTotals = dailyTotalsState[0], setDailyTotals = dailyTotalsState[1];
   var overviewRangeState = useState("week"), overviewRange = overviewRangeState[0], setOverviewRange = overviewRangeState[1];
+
+  var calorieCardRef = useRef(null);
+  var weightCardRef = useRef(null);
+  var scrollAnchorRef = useRef(null);
+  function captureScrollAnchor(ref) {
+    if (ref.current) scrollAnchorRef.current = { ref: ref, top: ref.current.getBoundingClientRect().top };
+  }
+  useLayoutEffect(function () {
+    if (scrollAnchorRef.current && scrollAnchorRef.current.ref.current) {
+      var newTop = scrollAnchorRef.current.ref.current.getBoundingClientRect().top;
+      var delta = newTop - scrollAnchorRef.current.top;
+      if (Math.abs(delta) > 0.5) window.scrollBy(0, delta);
+      scrollAnchorRef.current = null;
+    }
+  }, [viewDate]);
 
   var detailEntryState = useState(null), detailEntry = detailEntryState[0], setDetailEntry = detailEntryState[1];
   var detailMacroState = useState(null), detailMacro = detailMacroState[0], setDetailMacro = detailMacroState[1];
@@ -1263,6 +1337,10 @@ function NutritionTracker() {
       var wl = await storageGet("weight-log", []);
       wl.sort(function (a, b) { return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
       setWeightLog(wl);
+
+      var wg = await storageGet("water-goal", 2500);
+      setWaterGoal(wg);
+      setWaterGoalDraft(String(round1(wg / 1000)));
 
       var listResult = await window.storage.list("log:");
       var keys = (listResult && listResult.keys) ? listResult.keys : [];
@@ -1283,6 +1361,8 @@ function NutritionTracker() {
     (async function () {
       var l = await storageGet("log:" + viewDate, []);
       setLog(l);
+      var wl = await storageGet("water:" + viewDate, []);
+      setWaterLog(wl);
     })();
   }, [viewDate]);
 
@@ -1463,15 +1543,17 @@ function NutritionTracker() {
     if (!val) return;
     setViewDate(val > todayStr ? todayStr : val);
   }
-  function jumpToDay(dateStr) { setViewDate(dateStr); }
+  function jumpToDay(dateStr) { captureScrollAnchor(calorieCardRef); setViewDate(dateStr); }
 
   function goOverviewPeriod(dir) {
+    captureScrollAnchor(calorieCardRef);
     setViewDate(function (v) {
       var shifted = shiftByRange(v, overviewRange, dir);
       return shifted > todayStr ? todayStr : shifted;
     });
   }
   function goWeightPeriod(dir) {
+    captureScrollAnchor(weightCardRef);
     setViewDate(function (v) {
       var shifted = shiftByRange(v, weightRange, dir);
       return shifted > todayStr ? todayStr : shifted;
@@ -1534,6 +1616,35 @@ function NutritionTracker() {
     await storageSet("weight-log", updated);
     setWeightInput("");
   }
+
+  async function handleAddWater(ml) {
+    var entry = { id: uid(), ml: ml };
+    var newWaterLog = waterLog.concat([entry]);
+    setWaterLog(newWaterLog);
+    await storageSet("water:" + viewDate, newWaterLog);
+  }
+  async function handleRemoveWater(id) {
+    var newWaterLog = waterLog.filter(function (e) { return e.id !== id; });
+    setWaterLog(newWaterLog);
+    await storageSet("water:" + viewDate, newWaterLog);
+  }
+  async function handleAddCustomWater() {
+    var ml = parseFloat(customWaterAmount);
+    if (!ml || ml <= 0) { setWaterError("Bitte eine gültige Menge angeben."); return; }
+    setWaterError("");
+    await handleAddWater(Math.round(ml));
+    setCustomWaterAmount("");
+  }
+  async function handleSaveWaterGoal() {
+    var l = parseFloat(waterGoalDraft);
+    if (!l || l <= 0) { return; }
+    var ml = Math.round(l * 1000);
+    setWaterGoal(ml);
+    await storageSet("water-goal", ml);
+    setShowWaterGoalEdit(false);
+  }
+
+  var waterTotalMl = useMemo(function () { return waterLog.reduce(function (s, e) { return s + e.ml; }, 0); }, [waterLog]);
 
   var chartPoints = useMemo(function () { return groupWeightData(weightLog, weightRange, viewDate); }, [weightLog, weightRange, viewDate]);
   var latestWeight = weightLog.length ? weightLog[weightLog.length - 1] : null;
@@ -1712,7 +1823,7 @@ function NutritionTracker() {
             }))
       ),
 
-      h("div", { className: "card", style: { marginTop: 24, marginBottom: 0 } },
+      h("div", { className: "card", style: { marginTop: 24, marginBottom: 0 }, ref: calorieCardRef },
         h("div", { className: "card-row" },
           h("span", { className: "section-label mono" }, "KALORIENVERLAUF"),
           h("span", { className: "mono muted", style: { fontSize: 12 } }, (function () {
@@ -1809,7 +1920,7 @@ function NutritionTracker() {
         ) : null
       ),
 
-      h("div", { className: "card", style: { marginTop: 24, marginBottom: 0 } },
+      h("div", { className: "card", style: { marginTop: 24, marginBottom: 0 }, ref: weightCardRef },
         h("div", { className: "card-row" },
           h("div", { className: "section-label mono" }, h(Scale, { size: 14 }), "GEWICHT"),
           weightTrend !== null ? h("span", { className: "weight-trend mono " + (weightTrend > 0 ? "up" : (weightTrend < 0 ? "down" : "flat")) },
@@ -1851,10 +1962,51 @@ function NutritionTracker() {
             disabled: shiftByRange(viewDate, weightRange, 1) > todayStr
           }, h(ChevronRight, { size: 15 }))
         ) : null,
-        h(LineChart, { points: chartPoints, color: "#5B8FA3", unit: "kg", onPointClick: function (p) { if (p.date) setViewDate(p.date); } }),
+        h(LineChart, { points: chartPoints, color: "#5B8FA3", unit: "kg", onPointClick: function (p) { if (p.date) { captureScrollAnchor(weightCardRef); setViewDate(p.date); } } }),
         chartPoints.length ? h("div", { className: "weight-range-stats" },
           h("span", null, "Min " + rangeMin + " kg"),
           h("span", null, "Max " + rangeMax + " kg")
+        ) : null
+      ),
+
+      h("div", { className: "card", style: { marginTop: 24, marginBottom: 0 } },
+        h("div", { className: "card-row" },
+          h("div", { className: "section-label mono" }, h(Droplet, { size: 14, style: { color: WATER_COLOR } }), "WASSER"),
+          h("button", { className: "link-btn mono", onClick: function () { setWaterGoalDraft(String(round1(waterGoal / 1000))); setShowWaterGoalEdit(true); } }, "bearbeiten")
+        ),
+        h("div", { className: "water-ring-wrap" },
+          h("div", { className: "ring-wrap" },
+            h(Ring, { value: waterTotalMl, goal: waterGoal, color: WATER_COLOR, size: 190, stroke: 15 }),
+            h("div", { className: "ring-center water-ring-center" },
+              h(Droplet, { size: 22, style: { color: WATER_COLOR } }),
+              h("span", { className: "water-ring-val" }, round1(waterTotalMl / 1000)),
+              h("span", { className: "water-ring-goal" }, "/ " + round1(waterGoal / 1000) + " L")
+            )
+          ),
+          h("span", { className: "mono", style: { marginTop: 10, fontSize: 13, color: waterTotalMl >= waterGoal ? WATER_COLOR : "#8B93A8" } },
+            (waterGoal > 0 ? Math.round(waterTotalMl / waterGoal * 100) : 0) + "% erreicht"
+          )
+        ),
+        h("div", { className: "water-presets" },
+          WATER_PRESETS_ML.map(function (ml) {
+            return h("button", { key: ml, className: "water-preset-btn", onClick: function () { handleAddWater(ml); } }, "+ " + round1(ml / 1000) + " L");
+          })
+        ),
+        h("div", { className: "water-custom-row" },
+          h("input", {
+            type: "number", className: "input mono", placeholder: "eigene Menge (ml)", value: customWaterAmount,
+            onChange: function (e) { setCustomWaterAmount(e.target.value); }
+          }),
+          h("button", { className: "btn-primary", onClick: handleAddCustomWater }, h(Plus, { size: 15 }), "hinzufügen")
+        ),
+        waterError ? h("div", { className: "error-text", style: { marginBottom: 10 } }, waterError) : null,
+        waterLog.length > 0 ? h("div", { style: { marginTop: 8 } },
+          waterLog.slice().reverse().map(function (e) {
+            return h("div", { className: "water-log-item", key: e.id },
+              h("span", { className: "mono", style: { fontSize: 13 } }, e.ml >= 1000 ? (round1(e.ml / 1000) + " L") : (e.ml + " ml")),
+              h("button", { className: "log-del", onClick: function () { handleRemoveWater(e.id); } }, h(Trash2, { size: 14 }))
+            );
+          })
         ) : null
       )
     ),
@@ -1988,6 +2140,24 @@ function NutritionTracker() {
                 );
               })
             )
+      )
+    ) : null,
+
+    showWaterGoalEdit ? h("div", { className: "modal-overlay", onClick: function () { setShowWaterGoalEdit(false); } },
+      h("div", { className: "modal", onClick: function (e) { e.stopPropagation(); } },
+        h("div", { className: "modal-header" },
+          h("span", { className: "modal-title display" }, "Wasserziel anpassen"),
+          h("button", { className: "modal-close", onClick: function () { setShowWaterGoalEdit(false); } }, h(X, { size: 18 }))
+        ),
+        h("div", { className: "field-rel" },
+          h("label", { className: "field-label mono" }, "Tagesziel"),
+          h("input", {
+            type: "number", step: "0.1", min: "0", className: "input mono", value: waterGoalDraft,
+            onChange: function (e) { setWaterGoalDraft(e.target.value); }
+          }),
+          h("span", { className: "field-unit field-unit-goal" }, "L")
+        ),
+        h("button", { className: "btn-primary", style: { width: "100%", marginTop: 16 }, onClick: handleSaveWaterGoal }, h(Check, { size: 15 }), "Ziel speichern")
       )
     ) : null
   );
