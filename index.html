@@ -985,6 +985,11 @@ function computeTotals(entries) {
 }
 function uid() { return Math.random().toString(36).slice(2, 10); }
 function round1(n) { return Math.round(n * 10) / 10; }
+function formatLiters(ml) {
+  var s = (ml / 1000).toFixed(3);
+  s = s.replace(/0+$/, "").replace(/\.$/, "");
+  return s;
+}
 function pctOf(value, goal) {
   if (!goal || goal <= 0) return null;
   return Math.round((value / goal) * 100);
@@ -1340,7 +1345,7 @@ function NutritionTracker() {
 
       var wg = await storageGet("water-goal", 2500);
       setWaterGoal(wg);
-      setWaterGoalDraft(String(round1(wg / 1000)));
+      setWaterGoalDraft(formatLiters(wg));
 
       var listResult = await window.storage.list("log:");
       var keys = (listResult && listResult.keys) ? listResult.keys : [];
@@ -1920,6 +1925,47 @@ function NutritionTracker() {
         ) : null
       ),
 
+      h("div", { className: "card", style: { marginTop: 24, marginBottom: 0 } },
+        h("div", { className: "card-row" },
+          h("div", { className: "section-label mono" }, h(Droplet, { size: 14, style: { color: WATER_COLOR } }), "WASSER"),
+          h("button", { className: "link-btn mono", onClick: function () { setWaterGoalDraft(formatLiters(waterGoal)); setShowWaterGoalEdit(true); } }, "bearbeiten")
+        ),
+        h("div", { className: "water-ring-wrap" },
+          h("div", { className: "ring-wrap" },
+            h(Ring, { value: waterTotalMl, goal: waterGoal, color: WATER_COLOR, size: 190, stroke: 15 }),
+            h("div", { className: "ring-center water-ring-center" },
+              h(Droplet, { size: 22, style: { color: WATER_COLOR } }),
+              h("span", { className: "water-ring-val" }, formatLiters(waterTotalMl)),
+              h("span", { className: "water-ring-goal" }, "/ " + formatLiters(waterGoal) + " L")
+            )
+          ),
+          h("span", { className: "mono", style: { marginTop: 10, fontSize: 13, color: waterTotalMl >= waterGoal ? WATER_COLOR : "#8B93A8" } },
+            (waterGoal > 0 ? Math.round(waterTotalMl / waterGoal * 100) : 0) + "% erreicht"
+          )
+        ),
+        h("div", { className: "water-presets" },
+          WATER_PRESETS_ML.map(function (ml) {
+            return h("button", { key: ml, className: "water-preset-btn", onClick: function () { handleAddWater(ml); } }, "+ " + formatLiters(ml) + " L");
+          })
+        ),
+        h("div", { className: "water-custom-row" },
+          h("input", {
+            type: "number", className: "input mono", placeholder: "eigene Menge (ml)", value: customWaterAmount,
+            onChange: function (e) { setCustomWaterAmount(e.target.value); }
+          }),
+          h("button", { className: "btn-primary", onClick: handleAddCustomWater }, h(Plus, { size: 15 }), "hinzufügen")
+        ),
+        waterError ? h("div", { className: "error-text", style: { marginBottom: 10 } }, waterError) : null,
+        waterLog.length > 0 ? h("div", { style: { marginTop: 8 } },
+          waterLog.slice().reverse().map(function (e) {
+            return h("div", { className: "water-log-item", key: e.id },
+              h("span", { className: "mono", style: { fontSize: 13 } }, e.ml >= 1000 ? (formatLiters(e.ml) + " L") : (e.ml + " ml")),
+              h("button", { className: "log-del", onClick: function () { handleRemoveWater(e.id); } }, h(Trash2, { size: 14 }))
+            );
+          })
+        ) : null
+      ),
+
       h("div", { className: "card", style: { marginTop: 24, marginBottom: 0 }, ref: weightCardRef },
         h("div", { className: "card-row" },
           h("div", { className: "section-label mono" }, h(Scale, { size: 14 }), "GEWICHT"),
@@ -1966,47 +2012,6 @@ function NutritionTracker() {
         chartPoints.length ? h("div", { className: "weight-range-stats" },
           h("span", null, "Min " + rangeMin + " kg"),
           h("span", null, "Max " + rangeMax + " kg")
-        ) : null
-      ),
-
-      h("div", { className: "card", style: { marginTop: 24, marginBottom: 0 } },
-        h("div", { className: "card-row" },
-          h("div", { className: "section-label mono" }, h(Droplet, { size: 14, style: { color: WATER_COLOR } }), "WASSER"),
-          h("button", { className: "link-btn mono", onClick: function () { setWaterGoalDraft(String(round1(waterGoal / 1000))); setShowWaterGoalEdit(true); } }, "bearbeiten")
-        ),
-        h("div", { className: "water-ring-wrap" },
-          h("div", { className: "ring-wrap" },
-            h(Ring, { value: waterTotalMl, goal: waterGoal, color: WATER_COLOR, size: 190, stroke: 15 }),
-            h("div", { className: "ring-center water-ring-center" },
-              h(Droplet, { size: 22, style: { color: WATER_COLOR } }),
-              h("span", { className: "water-ring-val" }, round1(waterTotalMl / 1000)),
-              h("span", { className: "water-ring-goal" }, "/ " + round1(waterGoal / 1000) + " L")
-            )
-          ),
-          h("span", { className: "mono", style: { marginTop: 10, fontSize: 13, color: waterTotalMl >= waterGoal ? WATER_COLOR : "#8B93A8" } },
-            (waterGoal > 0 ? Math.round(waterTotalMl / waterGoal * 100) : 0) + "% erreicht"
-          )
-        ),
-        h("div", { className: "water-presets" },
-          WATER_PRESETS_ML.map(function (ml) {
-            return h("button", { key: ml, className: "water-preset-btn", onClick: function () { handleAddWater(ml); } }, "+ " + round1(ml / 1000) + " L");
-          })
-        ),
-        h("div", { className: "water-custom-row" },
-          h("input", {
-            type: "number", className: "input mono", placeholder: "eigene Menge (ml)", value: customWaterAmount,
-            onChange: function (e) { setCustomWaterAmount(e.target.value); }
-          }),
-          h("button", { className: "btn-primary", onClick: handleAddCustomWater }, h(Plus, { size: 15 }), "hinzufügen")
-        ),
-        waterError ? h("div", { className: "error-text", style: { marginBottom: 10 } }, waterError) : null,
-        waterLog.length > 0 ? h("div", { style: { marginTop: 8 } },
-          waterLog.slice().reverse().map(function (e) {
-            return h("div", { className: "water-log-item", key: e.id },
-              h("span", { className: "mono", style: { fontSize: 13 } }, e.ml >= 1000 ? (round1(e.ml / 1000) + " L") : (e.ml + " ml")),
-              h("button", { className: "log-del", onClick: function () { handleRemoveWater(e.id); } }, h(Trash2, { size: 14 }))
-            );
-          })
         ) : null
       )
     ),
